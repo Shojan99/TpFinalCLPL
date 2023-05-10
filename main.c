@@ -10,6 +10,8 @@
 
 #include "includes/includes.h"
 
+// HOLA ALEJO!!!!!
+
 int mostrarMenu(char * msg, int tope)
 {
 	int opcion = 0;
