@@ -79,3 +79,46 @@ obj_TipoActividad *TipoActividad_new()
   return (obj_TipoActividad *)init_obj(sizeof(obj_TipoActividad), init_TipoActividad);
 }
 //----------------------------------------------------
+void actualizarTipoActividad(){
+	obj_TipoActividad *tAct; 
+    tAct = TipoActividad_new(); 
+    char nombreTAct[90];
+    int cod,i,confirma;
+    
+	printf("[ Actualizar profesor ]\n Ingrese el codigo del tipo de actividad a modificar\n");
+	scanf("%d",&cod);
+	
+	if(tAct->findbykey(tAct, cod) != NOT_FOUND){ 
+		
+		do{
+		system("cls");	
+		printf("Ingrese lo que desea modificar\n1 - nombre \n");
+		scanf("%d",&i);
+		switch(i){
+			case 1:
+				
+				printf("Ingrese el nuevo nombre\n");
+				fflush(stdin);
+				fgets(nombreTAct,60,stdin);
+				tAct->setNombre(tAct,nombreTAct);
+				if(!tAct->saveObj(tAct))
+			  		{
+			  			printf("Ocurrio un error al actualizar el nombre:\n%s\n",getLastError());
+			  		}
+			  	printf("Se actualizo el nombre\n");
+			  	break;	
+			default:
+				printf("ingrese un valor valido\n");
+				break;
+		}
+		printf("Desea seguir ingresando?\n - Presione cualquier tecla para si y 0 para no\n");
+		scanf("%d",&confirma);
+		}while(confirma!=0);
+	}else{
+		system("cls");
+		printf("No se encontro el tipo de actividad\n");
+	}
+	destroyObj(tAct);
+	
+}
+

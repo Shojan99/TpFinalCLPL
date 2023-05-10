@@ -59,7 +59,7 @@ int ingresos()
 	return 1;
 }
 
-int actualizaciones() //el pepe eso tilin
+int actualizaciones() 
 {
 	switch(mostrarMenu("Menu de actualizacion de informacion\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - Inscribirse a una nueva actividad\n9 - Salir\n", 9))
 	{
@@ -70,7 +70,7 @@ int actualizaciones() //el pepe eso tilin
 			actualizarProfesor();
 			break;
 		case 3:
-			//actualizarActividad();
+			actualizarActividad();
 			break;
 		case 4:
 			actualizarLocalidad();
