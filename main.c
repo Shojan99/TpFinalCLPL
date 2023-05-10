@@ -45,7 +45,7 @@ int ingresos()
 			ingresarHorario();
 			break;
 		case 6:
-			//ingresarLugar();
+			ingresarLugar();
 			break;
 		case 7:
 			ingresarTipoActividad();

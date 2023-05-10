@@ -1,7 +1,7 @@
 [Project]
 FileName=tpfinalTMPL.dev
 Name=tpfinalTMPL
-UnitCount=29
+UnitCount=31
 Type=1
 Ver=2
 ObjFiles=
@@ -20,7 +20,7 @@ ObjectOutput=
 OverrideOutput=0
 OverrideOutputName=tpfinalTMPL.exe
 HostApplication=
-Folders=config,includes,lib,lib/orm,lib/utils,src,src/actividad,src/actividad_socio,src/cuotas,src/horarios,src/importe_actividad,src/localidad,src/profesor,src/socio,src/tipo_actividad
+Folders=config,includes,lib,lib/orm,lib/utils,src,src/actividad,src/actividad_socio,src/cuotas,src/horarios,src/importe_actividad,src/localidad,src/lugar,src/profesor,src/socio,src/tipo_actividad
 CommandLine=config.ini
 UseCustomMakefile=0
 CustomMakefile=
@@ -290,20 +290,10 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit30]
-FileName=src\tratamiento\tratamiento.h
-CompileCpp=0
-Folder=src/tratamiento
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit31]
-FileName=src\tratamiento\tratamiento.c
+FileName=src\lugar\lugar.h
 CompileCpp=0
-Folder=src/tratamiento
+Folder=src/lugar
 Compile=1
 Link=1
 Priority=1000
@@ -394,6 +384,16 @@ BuildCmd=
 FileName=src\actividad\actividad.h
 CompileCpp=0
 Folder=src/actividad
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit30]
+FileName=src\lugar\lugar.c
+CompileCpp=0
+Folder=src/lugar
 Compile=1
 Link=1
 Priority=1000

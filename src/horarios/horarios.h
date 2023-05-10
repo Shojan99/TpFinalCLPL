@@ -30,6 +30,9 @@
 		getActividadObjPtr  getActividadObj;
 		//getLugarObjPtr  	getLugarObj;
 	    obj_Actividad 		*actividad;
+	    
+	    getLugarObjPtr  	getLugarObj;
+	    obj_Lugar			*lugar;
 	}obj_Horario;
 	// funcionalidad publica que se implementa en actividad_socio.c
 	extern obj_Horario *Horario_new ();
