@@ -157,7 +157,7 @@ void ingresarSocio() //consultar el static void!!!
     fgets(telefono,20,stdin);
     soc->setTelefono(soc,telefono);
     
-    soc->setMoroso(soc,true);
+    soc->setMoroso(soc,false);
 
     if(!soc->saveObj(soc))
     {

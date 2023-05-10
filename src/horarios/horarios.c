@@ -89,22 +89,21 @@ void ingresarHorario(){
     
     printf("Ingrese el dia\n");
     scanf("%d",&dia);
-      horario->setDia(horario,dia);
+    horario->setDia(horario,dia);
 
-      printf("Ingrese el codigo de la actividad\n");
-      scanf("%d",&codAct);
-      horario->setCodAct(horario,codAct);
+    printf("Ingrese el codigo de la actividad\n");
+    scanf("%d",&codAct);
+    horario->setCodAct(horario,codAct);
 
     printf("Ingrese el horario de comienzo\n");
     fflush(stdin);
-    printf("%s",getFechaHora());
     fgets(horaDesde,6,stdin);
-      horario->setHoraDesde(horario,"2020-03-03 20:00:00");
+    horario->setHoraDesde(horario,horaDesde);
 
-      printf("Ingrese el horario de finalizacion\n");
-      fflush(stdin);
+    printf("Ingrese el horario de finalizacion\n");
+    fflush(stdin);
     fgets(horaHasta,6,stdin);
-      horario->setHoraHasta(horario,"2020-04-03 20:00:00");
+    horario->setHoraHasta(horario,horaHasta);
     if(!horario->saveObj(horario))
     {
         printf("Ocurrio un error al agregar tipo de actividad:\n%s\n",getLastError());
