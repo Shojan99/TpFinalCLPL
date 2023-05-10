@@ -1,6 +1,3 @@
-// Probando
-// ESTOY CAMBIANDO ARCHIVOS
-// A VER SI SE BAJA
 #include <stdio.h>
 #include <stdlib.h>
 #include <libpq-fe.h> 
