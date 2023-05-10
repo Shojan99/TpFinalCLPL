@@ -81,14 +81,15 @@ obj_Profesor *getProfesor_ActividadObj_Impl(void *self)
 //implementacion ingresar
 //----------------------------------------------------
 void ingresarActividad(){
-    int codActividad,legajo;
+    int codActividad,legajo, tipoActividad;
     char fechaInicio[12],fechaFin[12];
     
     obj_Actividad *act;
     act = Actividad_new();
-    printf("ingrese el codigo de la actividad\n");
-    scanf("%d",&codActividad);
-    act->setCodTipoAct(act,codActividad);
+    
+    printf("ingrese el tipo de la actividad\n");
+    scanf("%d",&tipoActividad);
+    act->setCodTipoAct(act,tipoActividad);   
     
     printf("ingrese el legajo del profe que va a dar la actividad\n");
     scanf("%d",&legajo);
@@ -110,64 +111,6 @@ void ingresarActividad(){
           destroyObj(act);
 }
 
-void listarActividades(){
-    printf("[ Listado de Actividades ]\n");
-    int i;
-    void *list;
-    obj_Actividad *loc;    
-    obj_Actividad *itm;
-    loc = Actividad_new();
-    int size = loc->findAll(loc,&list,NULL);
-    for(i=0;i<size;++i)
-    {
-    	itm = ((Object **)list)[i];
-    	((Object *)itm)->toString(itm);
-    }
-    destroyObjList(list,size);
-    destroyObj(loc);
-    
-}
-//----------------------------------------------------
-//implementacion constructor
-//----------------------------------------------------
-static void *init_Actividad(void *self)
-{
-  obj_Actividad *obj      = this(self);
-  obj->ds  			    = &table_Actividad;
-  obj->constructor 	    = Actividad_new;
-  obj->sizeObj 		    = sizeof(obj_Actividad*);
-  // inicializar cada puntero a una referencia relacionada, para ver cuando se busca por el id..
-  obj->tipo_actividad   = NULL;
-  obj->profesor   		= NULL;
-  //incializacion de la interfaz de la entidad
-  obj->toString    		= toString_ActividadImpl;
-  // Inicializar handlers de getters y setters
-  /// getters
-  obj->getCodigo 		= getCodigoActividad_Impl;
-  obj->getCodTipoAct	= getCodTipoActActividad_Impl;
-  obj->getLegajoProfe	= getLegajoProfeActividad_Impl;
-  obj->getFechaDesde 	= getFechaDesdeActividad_Impl;
-  obj->getFechaFin 		= getFechaFinActividad_Impl;
-  /// setters  
-  obj->setCodigo 		= setCodigoActividad_Impl;
-  obj->setLegajoProfe	= setLegajoProfeActividad_Impl;    
-  obj->setFechaDesde	= setFechaDesdeActividad_Impl;
-  obj->setFechaFin 		= setFechaFinActividad_Impl;
-  
-  // implementar detroy internal para liberar recursos  
-  obj->destroyInternal 	= destroyInternalAct_Impl;
-  //---- acceso a relaciones  
-  obj->getTipoActividadObj 	= getTipoActividad_ActividadObj_Impl;  
-  obj->getProfesorObj		= getProfesor_ActividadObj_Impl;
-  return obj;
-}
-//----------------------------------------------------
-//constructor de Actividad
-obj_Actividad *Actividad_new()
-{
-  return (obj_Actividad *)init_obj(sizeof(obj_Actividad), init_Actividad);
-}
-//----------------------------------------------------
 void actualizarActividad(){
 	obj_Actividad *act;
 	act = Actividad_new();
@@ -247,3 +190,64 @@ void actualizarActividad(){
 	}
 	destroyObj(act);
 }
+
+void listarActividades(){
+    printf("[ Listado de Actividades ]\n");
+    int i;
+    void *list;
+    obj_Actividad *loc;    
+    obj_Actividad *itm;
+    loc = Actividad_new();
+    int size = loc->findAll(loc,&list,NULL);
+    for(i=0;i<size;++i)
+    {
+    	itm = ((Object **)list)[i];
+    	((Object *)itm)->toString(itm);
+    }
+    destroyObjList(list,size);
+    destroyObj(loc);
+    
+}
+//----------------------------------------------------
+//implementacion constructor
+//----------------------------------------------------
+static void *init_Actividad(void *self)
+{
+  obj_Actividad *obj      = this(self);
+  obj->ds  			    = &table_Actividad;
+  obj->constructor 	    = Actividad_new;
+  obj->sizeObj 		    = sizeof(obj_Actividad*);
+  // inicializar cada puntero a una referencia relacionada, para ver cuando se busca por el id..
+  obj->tipo_actividad   = NULL;
+  obj->profesor   		= NULL;
+  //incializacion de la interfaz de la entidad
+  obj->toString    		= toString_ActividadImpl;
+  // Inicializar handlers de getters y setters
+  /// getters
+  obj->getCodigo 		= getCodigoActividad_Impl;
+  obj->getCodTipoAct	= getCodTipoActActividad_Impl;
+  obj->getLegajoProfe	= getLegajoProfeActividad_Impl;
+  obj->getFechaDesde 	= getFechaDesdeActividad_Impl;
+  obj->getFechaFin 		= getFechaFinActividad_Impl;
+  /// setters  
+  obj->setCodigo 		= setCodigoActividad_Impl;
+  obj->setLegajoProfe	= setLegajoProfeActividad_Impl;    
+  obj->setFechaDesde	= setFechaDesdeActividad_Impl;
+  obj->setFechaFin 		= setFechaFinActividad_Impl;
+  obj->setCodTipoAct 	= setCodTipoActActividad_Impl;
+  
+  // implementar detroy internal para liberar recursos  
+  obj->destroyInternal 	= destroyInternalAct_Impl;
+  //---- acceso a relaciones  
+  obj->getTipoActividadObj 	= getTipoActividad_ActividadObj_Impl;  
+  obj->getProfesorObj		= getProfesor_ActividadObj_Impl;
+  return obj;
+}
+//----------------------------------------------------
+//constructor de Actividad
+obj_Actividad *Actividad_new()
+{
+  return (obj_Actividad *)init_obj(sizeof(obj_Actividad), init_Actividad);
+}
+//----------------------------------------------------
+
