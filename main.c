@@ -104,7 +104,7 @@ int listados()
 			listarSocios("moroso=true");
 			break;
 		case 3:
-			//listarHorarios();
+			listarHorarios();
 			break;
 		case 4:
 			listarActividadesSocio();

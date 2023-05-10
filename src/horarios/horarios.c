@@ -11,7 +11,16 @@ THIS(obj_Horario)// crea definicion de funcion this para este modulo. .. Macro e
 static void toString_HorarioImpl(void *self)
 {
      obj_Horario *obj=this(self);     
-     
+     //obj_Lugar *lug = obj->getLugarObj(obj);
+     obj_Actividad *act = obj->getActividadObj(obj);
+     obj_TipoActividad *t_act = act->getTipoActividadObj(act);
+     // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
+     printf("Actividad:%s\nDia:%d\nHora Desde:%s\nHora Hasta:%s\n",
+     t_act->getNombre(obj), 
+     obj->getDia(obj), 
+     obj->getHoraDesde(obj),
+     obj->getHoraHasta(obj));
+     //lug->getLugar(lug)
      // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
      printf("\n"); 
 }
@@ -70,7 +79,7 @@ void ingresarHorario(){
     obj_Horario *horario; 
     horario = Horario_new(); 
     int dia,codAct;
-    char horaDesde[9],horaHasta[9],lugar[90];
+    char horaDesde[6],horaHasta[6],lugar[90];
 
     fflush(stdin);
     printf("Ingrese el lugar\n");
@@ -88,13 +97,14 @@ void ingresarHorario(){
 
     printf("Ingrese el horario de comienzo\n");
     fflush(stdin);
-    fgets(horaDesde,9,stdin);
-      horario->setHoraDesde(horario,horaDesde);
+    printf("%s",getFechaHora());
+    fgets(horaDesde,6,stdin);
+      horario->setHoraDesde(horario,"2020-03-03 20:00:00");
 
       printf("Ingrese el horario de finalizacion\n");
       fflush(stdin);
-    fgets(horaHasta,9,stdin);
-      horario->setHoraHasta(horario,horaHasta);
+    fgets(horaHasta,6,stdin);
+      horario->setHoraHasta(horario,"2020-04-03 20:00:00");
     if(!horario->saveObj(horario))
     {
         printf("Ocurrio un error al agregar tipo de actividad:\n%s\n",getLastError());
@@ -149,4 +159,22 @@ obj_Horario *Horario_new()
   return (obj_Horario *)init_obj(sizeof(obj_Horario), init_Horario);
 }
 //----------------------------------------------------
-
+//----------------------------------------------------
+//implementacion listados
+//----------------------------------------------------
+void listarHorarios(){
+    printf("[ Listado de horarios ]\n");
+    int i;
+    void *list;
+    obj_Horario *hor;    
+    obj_Horario *itm;
+    hor = Horario_new();
+    int size = hor->findAll(hor,&list,NULL);
+    for(i=0;i<size;++i)
+    {
+        itm = ((Object **)list)[i];    
+        ((Object *)itm)->toString(itm);
+    }
+    destroyObjList(list,size);
+    destroyObj(hor);
+}
