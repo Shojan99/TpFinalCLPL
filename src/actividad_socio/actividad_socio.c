@@ -9,12 +9,21 @@
 THIS(obj_ActividadSocio)// crea definicion de funcion this para este modulo. .. Macro en config.h
 
 //----------------------------------------------------
+//----------------------------------------------------
 static void toString_ActividadSocioImpl(void *self)
 {
-     obj_ActividadSocio *obj=this(self);     
-     
-     // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
-     printf("\n"); 
+    obj_ActividadSocio *obj=this(self);     
+    obj_Actividad *act = obj->getActividadObj(obj);
+    obj_Socio *soc = obj->getSocioObj(obj);
+    // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
+    printf("Codigo Actividad-Socio: %d\n - Codigo Socio: %d\n - Codigo actividad: %d\n - Fecha Inicio: %s\n - Fecha Fin: %s\n",
+	obj->getCodigo(obj), 
+	soc->getNroSocio(soc),
+	act->getCodigo(act), 
+	obj->getFechaInicio(obj),
+	obj->getFechaFin(obj));
+    // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
+    //printf("\n"); 
 }
 //----------------------------------------------------
 //implementacion de getters
@@ -76,9 +85,9 @@ void ingresarActividadSocio() //consultar el static void!!!
     scanf("%d",&nro_soc);
     actSoc->setNroSocio(actSoc,nro_soc);
     
-    printf("ingrese el numero de socio\n");
-    scanf("%d",&nro_soc);
-    actSoc->setNroSocio(actSoc,nro_soc);
+    printf("ingrese el numero de actividad\n");
+    scanf("%d",&cod_act);
+    actSoc->setCodAct(actSoc,cod_act);
     
     printf("ingrese la fecha de inicio\n");
     fflush(stdin);
@@ -101,6 +110,25 @@ obj_Actividad *getActividad_ActividadSocioObj_Impl(void *self)
 	obj_ActividadSocio *obj = this(self);	
 	//acceso a la informacion relacionada
 	return NULL;
+}
+//----------------------------------------------------
+//implementacion listados
+//----------------------------------------------------
+void listarActividadesSocio(){
+    printf("[ Listado de actividades de socio ]\n");
+    int i;
+    void *list;
+    obj_ActividadSocio *actSoc;    
+    obj_ActividadSocio *itm;
+    actSoc = ActividadSocio_new();
+    int size = actSoc->findAll(actSoc,&list,NULL);
+    for(i=0;i<size;++i)
+    {
+        itm = ((Object **)list)[i];    
+        ((Object *)itm)->toString(itm);
+    }
+    destroyObjList(list,size);
+    destroyObj(actSoc);
 }
 //----------------------------------------------------
 obj_Socio *getSocio_ActividadSocioObj_Impl(void *self)
@@ -132,7 +160,8 @@ static void *init_ActividadSocio(void *self)
   obj->getFechaFin 		= getFechaFinActividadSocio_Impl;
   /// setters  
   obj->setCodigo 		= setCodigoActividadSocio_Impl;
-  obj->setNroSocio		= setNroSocioActividadSocio_Impl;    
+  obj->getNroSocio		= getNroSocioActividadSocio_Impl;
+  obj->setCodAct		= setCodActActividadSocio_Impl;    
   obj->setFechaInicio	= setFechaInicioActividadSocio_Impl;
   obj->setFechaFin 		= setFechaFinActividadSocio_Impl;
   

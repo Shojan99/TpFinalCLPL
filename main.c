@@ -107,7 +107,7 @@ int listados()
 			//listarHorarios();
 			break;
 		case 4:
-			listarActividades();
+			listarActividadesSocio();
 			break;
 		case 5:
 			//ListarCuotas();
