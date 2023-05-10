@@ -103,7 +103,7 @@ void ingresarProfesor() //consultar el static void!!!
     }
     destroyObj(prof);
 }
-
+// shojan te quiero
 void listarProfesores(){
     printf("[ Listado de profesores ]\n");
     int i;
