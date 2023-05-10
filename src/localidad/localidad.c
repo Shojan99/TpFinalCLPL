@@ -105,3 +105,64 @@ obj_Localidad *Localidad_new()
   return (obj_Localidad *)init_obj(sizeof(obj_Localidad), init_Localidad);
 }
 //----------------------------------------------------
+void actualizarLocalidad(){
+	obj_Localidad *loc;
+    loc = Localidad_new();
+    int cod,i,confirma;
+    char nombre[60]; 
+	printf("[ Actualizar localidad ]\n Ingrese el codigo postal de la localidad a modificar\n");
+	scanf("%d",&cod);
+	
+	if(loc->findbykey(loc, cod) != NOT_FOUND){ 
+		
+		do{
+		system("cls");	
+		printf("Ingrese lo que desea modificar\n1 - codigo postal\n2 - nombre\n");
+		scanf("%d",&i);
+		switch(i){
+			case 1:
+	
+				printf("Ingrese el nuevo codigo postal\n");
+				scanf("%d",&cod);
+			
+			
+				if(loc->findbykey(loc,cod) != NOT_FOUND)
+  				{
+  				loc->toString(loc);
+		  		system("cls");
+		  		printf("Ya existe la localidad\n");
+				}else{
+					loc->setId(loc,cod);
+					if(!loc->saveObj(loc))
+				  		{
+				  			printf("Ocurrio un error al actualizar el codigo postal:\n%s\n",getLastError());
+				  		}
+				  	printf("Se actualizo el codigo postal\n");
+				}
+			  	break;
+				  	
+			case 2:
+				
+				printf("Ingrese el nuevo nombre\n");
+				fflush(stdin);
+				fgets(nombre,60,stdin);
+				loc->setNombre(loc,nombre);
+				if(!loc->saveObj(loc))
+			  		{
+			  			printf("Ocurrio un error al actualizar el nombre:\n%s\n",getLastError());
+			  		}
+			  	printf("Se actualizo el nombre\n");
+			  	break;	
+			default:
+				printf("ingrese un valor valido\n");
+				break;
+		}
+		printf("Desea seguir ingresando?\n - Presione cualquier tecla para si y 0 para no\n");
+		scanf("%d",&confirma);
+		}while(confirma!=0);
+	}else{
+		system("cls");
+		printf("No se encontro la localidad\n");
+	}
+	destroyObj(loc);
+}
