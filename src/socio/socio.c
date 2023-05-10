@@ -161,7 +161,7 @@ void ingresarSocio() //consultar el static void!!!
 
     if(!soc->saveObj(soc))
     {
-        printf("Ocurrio un error al agregar Localidad:\n%s\n",getLastError());
+        printf("Ocurrio un error al agregar Socio:\n%s\n",getLastError());
     }
     destroyObj(soc);
 }
@@ -177,12 +177,11 @@ void actualizarSocio(){
 	if(soc->findbykey(soc, nro_socio) != NOT_FOUND){ 
 		
 		do{
-		system("cls");	
+		//system("cls");	
 		printf("Ingrese lo que desea modificar\n1 - dni\n2 - nombre\n3 - apellido\n4 - domicilio\n5 - telefono\n");
 		scanf("%d",&i);
 		switch(i){
 			case 1:
-	
 				printf("Ingrese el nuevo dni\n");
 				scanf("%d",&dni);
 				soc->setDni(soc,dni);
@@ -193,8 +192,7 @@ void actualizarSocio(){
 			  	printf("Se actualizo el dni\n");
 			  	break;
 				  	
-			case 2:
-				
+			case 2:				
 				printf("Ingrese el nuevo nombre\n");
 				fflush(stdin);
 				fgets(nombre,80,stdin);
@@ -207,7 +205,6 @@ void actualizarSocio(){
 			  	break;	
 			  		
 			case 3:
-			 
 				printf("Ingrese el nuevo apellido\n");
 				fflush(stdin);
 				fgets(apellido,90,stdin);
@@ -220,7 +217,6 @@ void actualizarSocio(){
 				break;
 				
 			case 4:
-				
 				printf("Ingrese el nuevo domicilio\n");
 				fflush(stdin);
 				fgets(domicilio,120,stdin);
@@ -233,7 +229,6 @@ void actualizarSocio(){
 				break;
 			
 			case 5:
-				
 				printf("Ingrese el nuevo telefono\n");
 				fflush(stdin);
 				fgets(telefono,20,stdin);
