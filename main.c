@@ -1,4 +1,4 @@
-// CHINO COMILON
+// SEXO
 
 #include <stdio.h>
 #include <stdlib.h>
