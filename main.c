@@ -65,13 +65,13 @@ int actualizaciones()
  			actualizarSocio();
 			break;	
 		case 2:
-			//actualizarProfesor();
+			actualizarProfesor();
 			break;
 		case 3:
 			//actualizarActividad();
 			break;
 		case 4:
-			//actualizarLocalidad();
+			actualizarLocalidad();
 			break;
 		case 5:
 			//actualizarHorario();
