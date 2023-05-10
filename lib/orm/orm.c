@@ -461,7 +461,7 @@ void getValueByPos(void *self,char *cad, int pos)
   	if(strcmp(datoChar,"NULL")==0)
   	strcpy(field,"null");
   	else
-  	snprintf( field, MAX_WHERE_SQL, FRMTYPE(tipo), datoChar);
+  	snprintf(field, MAX_WHERE_SQL, FRMTYPE(tipo), datoChar);
   }
   if( tipo == t_float )
   {
