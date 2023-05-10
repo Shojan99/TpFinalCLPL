@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <malloc.h>
-
+//no
 char path_ini[MAX];
 char server[MAX];
 char database[MAX];
