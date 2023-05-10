@@ -1,0 +1,67 @@
+# Project: tpfinalTMPL
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe -D__DEBUG__
+CC       = gcc.exe -D__DEBUG__
+WINDRES  = windres.exe
+OBJ      = main.o lib/orm/orm.o lib/utils/utils.o src/localidad/localidad.o config/config.o lib/orm/query.o src/socio/socio.o src/profesor/profesor.o src/actividad/actividad.o src/tipo_actividad/tipo_actividad.o src/actividad_socio/actividad_socio.o src/cuotas/cuotas.o src/horarios/horarios.o src/importe_actividad/importe_actividad.o
+LINKOBJ  = main.o lib/orm/orm.o lib/utils/utils.o src/localidad/localidad.o config/config.o lib/orm/query.o src/socio/socio.o src/profesor/profesor.o src/actividad/actividad.o src/tipo_actividad/tipo_actividad.o src/actividad_socio/actividad_socio.o src/cuotas/cuotas.o src/horarios/horarios.o src/importe_actividad/importe_actividad.o
+LIBS     = -L"D:/Dev-Cpp/MinGW64/lib32" -L"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc "../../../../../../../Program Files (x86)/PostgreSQL/9.2/lib/libpq.lib" -m32 -g3
+INCS     = -I"D:/Dev-Cpp/MinGW64/include" -I"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/PostgreSQL/9.2/include"
+CXXINCS  = -I"D:/Dev-Cpp/MinGW64/include" -I"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"D:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"C:/Program Files (x86)/PostgreSQL/9.2/include"
+BIN      = tpfinalTMPL.exe
+CXXFLAGS = $(CXXINCS) -m32 -g3
+CFLAGS   = $(INCS) -m32 -g3
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+main.o: main.c
+	$(CC) -c main.c -o main.o $(CFLAGS)
+
+lib/orm/orm.o: lib/orm/orm.c
+	$(CC) -c lib/orm/orm.c -o lib/orm/orm.o $(CFLAGS)
+
+lib/utils/utils.o: lib/utils/utils.c
+	$(CC) -c lib/utils/utils.c -o lib/utils/utils.o $(CFLAGS)
+
+src/localidad/localidad.o: src/localidad/localidad.c
+	$(CC) -c src/localidad/localidad.c -o src/localidad/localidad.o $(CFLAGS)
+
+config/config.o: config/config.c
+	$(CC) -c config/config.c -o config/config.o $(CFLAGS)
+
+lib/orm/query.o: lib/orm/query.c
+	$(CC) -c lib/orm/query.c -o lib/orm/query.o $(CFLAGS)
+
+src/socio/socio.o: src/socio/socio.c
+	$(CC) -c src/socio/socio.c -o src/socio/socio.o $(CFLAGS)
+
+src/profesor/profesor.o: src/profesor/profesor.c
+	$(CC) -c src/profesor/profesor.c -o src/profesor/profesor.o $(CFLAGS)
+
+src/actividad/actividad.o: src/actividad/actividad.c
+	$(CC) -c src/actividad/actividad.c -o src/actividad/actividad.o $(CFLAGS)
+
+src/tipo_actividad/tipo_actividad.o: src/tipo_actividad/tipo_actividad.c
+	$(CC) -c src/tipo_actividad/tipo_actividad.c -o src/tipo_actividad/tipo_actividad.o $(CFLAGS)
+
+src/actividad_socio/actividad_socio.o: src/actividad_socio/actividad_socio.c
+	$(CC) -c src/actividad_socio/actividad_socio.c -o src/actividad_socio/actividad_socio.o $(CFLAGS)
+
+src/cuotas/cuotas.o: src/cuotas/cuotas.c
+	$(CC) -c src/cuotas/cuotas.c -o src/cuotas/cuotas.o $(CFLAGS)
+
+src/horarios/horarios.o: src/horarios/horarios.c
+	$(CC) -c src/horarios/horarios.c -o src/horarios/horarios.o $(CFLAGS)
+
+src/importe_actividad/importe_actividad.o: src/importe_actividad/importe_actividad.c
+	$(CC) -c src/importe_actividad/importe_actividad.c -o src/importe_actividad/importe_actividad.o $(CFLAGS)

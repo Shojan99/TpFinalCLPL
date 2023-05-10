@@ -1,0 +1,25 @@
+ 
+ - Escenario del sistema.
+ - Configuracion de conexion
+ - codigo fuente
+ - interface
+ - listado
+ - ordenamiento
+ - validaciones
+ - estructuracion del codigo
+ - Operaciones
+	- agregar 
+	- actualizar
+	- listar 
+	- buscar por clave
+ - Relaciones e implementacion 
+ - Manejo de Errores
+ - Liberacion de recursos
+ - Validacion de ingreso de datos
+ - Uso de Menues e interaccion con el usuario.
+ - Ayuda al usuario.
+ - Listados y generacion de archivos de salida 
+ - Ordenamiento de listados.
+ - Extra - Auditoria de Sistema.
+ - Configuracion de Usuarios PostgreSQL
+ 
