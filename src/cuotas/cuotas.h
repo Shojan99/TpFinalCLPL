@@ -53,7 +53,7 @@
 	{"fecha_pago",t_varchar,(sizeof(char)*MAXFECHA)+1,false,false},	
 	};
 	// plantilla para la Actividad.
-	static Table table_Cuotas={"actividad_socio",CNT_COL_CUOT,0, cols_Cuotas,NULL};
+	static Table table_Cuotas={"cuotas",CNT_COL_CUOT,0, cols_Cuotas,NULL};
 	typedef obj_Cuotas *(*getCuotasObjPtr)(void *self);
 #endif
 

@@ -41,7 +41,7 @@
 	{"importe",t_float,sizeof(float),false,false}
 	};
 	// plantilla para la Actividad.
-	static Table table_ImporteActividad={"actividad_socio",CNT_COL_IMPACT,0, cols_ImporteActividad,NULL};
+	static Table table_ImporteActividad={"importe_actividad",CNT_COL_IMPACT,0, cols_ImporteActividad,NULL};
 	typedef obj_ImporteActividad *(*getImporteActividadObjPtr)(void *self);
 #endif
 
