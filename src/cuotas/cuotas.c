@@ -131,4 +131,52 @@ obj_Cuotas *Cuotas_new()
   return (obj_Cuotas *)init_obj(sizeof(obj_Cuotas), init_Cuotas);
 }
 //----------------------------------------------------
+void ingresarCuota() 
+{
+    obj_Cuotas *cuota;
+    cuota = Cuotas_new();
+    int codActSocio,anio,mes;
+    double importe;
+    char  fechaVencimiento[12], fechaPago[12], estado[1];
+    
+    printf("Ingrese el codigo de actividad socio\n");
+   
+    scanf("%d",&codActSocio);
+    cuota->setCodActSocio(cuota,codActSocio);
+    
+    printf("Ingrese el anio de pago\n");
+    scanf("%d",&anio);
+    cuota->setAnio(cuota,anio);
+    
+    printf("ingrese el mes\n");
+    scanf("%d",&mes);
+    cuota->setMes(cuota,mes);
+    
+    printf("ingrese el importe\n");
+    scanf("%d",&importe);
+    cuota->setImporte(cuota,importe);
 
+    //fflush(stdin);
+    printf("ingrese el estado\n");
+    fflush(stdin);
+    fgets(estado,1,stdin);
+    cuota->setEstado(cuota,estado);
+    
+    printf("ingrese la fecha de vencimiento\n");
+    fflush(stdin);
+    fgets(fechaVencimiento,12,stdin);
+    cuota->setFechaVenc(cuota,estado);
+    
+    printf("ingrese la fecha de pago\n");
+    fflush(stdin);
+    fgets(fechaPago,12,stdin);
+    cuota->setFechaPago(cuota,estado);
+    
+    //soc->setMoroso(soc,false);
+
+    if(!cuota->saveObj(cuota))
+    {
+        printf("Ocurrio un error al agregar la cuota:\n%s\n",getLastError());
+    }
+    destroyObj(cuota);
+}
