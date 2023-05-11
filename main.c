@@ -24,10 +24,12 @@ int mostrarMenu(char * msg, int tope)
 	return opcion;
 }
 
-int ingresos()
+int menuIngreso()
 {
-	switch(mostrarMenu("Menu de ingreso de informacion\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - Inscribirse a una nueva actividad\n9 - Salir\n", 9))
+	switch(menu("Menu de ingreso de informacion\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - Inscribirse a una nueva actividad\n9 - Salir\n", 9))
 	{
+		case 0:
+			return 1;
  		case 1:
  			ingresarSocio();
 			break;	
@@ -53,15 +55,18 @@ int ingresos()
 			ingresarActividadSocio();
 			break;
 		case 9:
-			return 1;
+			ingresarCuota();
+			break;
 	}
 	return 1;
 }
 
-int actualizaciones() 
+int menuActualizar() 
 {
-	switch(mostrarMenu("Menu de actualizacion de informacion\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - Inscribirse a una nueva actividad\n9 - Salir\n", 9))
+	switch(menu("Menu de actualizacion de informacion\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - Inscribirse a una nueva actividad\n9 - Salir\n", 9))
 	{
+		case 0:
+			return 1;
  		case 1:
  			actualizarSocio();
 			break;	
@@ -87,15 +92,18 @@ int actualizaciones()
 			//actualizarActividadSocio();
 			break;
 		case 9:
-			return 1;
+			//actualizarCuota
+			break;
 	}
 	return 1;
 }
 
-int listados()
+int menuLista()
 {
-	switch(mostrarMenu("Menu de listado de informacion\n1 - Socios activos\n2 - Socios morosos\n3 - Horarios en la semana\n4 - Actividades de x socio\n5 - Listado de cuotas\n9 - Salir\n", 9))
+	switch(menu("Menu de listado de informacion\n1 - Socios activos\n2 - Socios morosos\n3 - Horarios en la semana\n4 - Actividades de x socio\n5 - Listado de cuotas\n9 - Salir\n", 9))
 	{
+		case 0:
+			return 1;
  		case 1:
  			listarSocios("activo=true");
 			break;	
@@ -111,28 +119,27 @@ int listados()
 		case 5:
 			//ListarCuotas();
 			break;
-		case 9:
-			return 1;
 	}
 	return 1;
 }
 
-int elegirOpcion()
+int menuPrincipal()
 {
-	switch(mostrarMenu("Menu de opciones\n1 - Ingresos\n2 - Actualizaciones\n3 - Listados\n4 - Salir\n", 4))
+	switch(menu("Menu de opciones\n1 - Ingresos\n2 - Actualizaciones\n3 - Listados\n4 - Salir\n", 4))
 	{
+		case 0:
+			return 0;
 	 	case 1:
-	 		return ingresos();
-			break;	
+	 		menuIngreso();	
+	 		break;
 		case 2:
-			return actualizaciones();
+			menuActualizar();
 			break;
 		case 3:
-			return listados();
+			menuLista();
 			break;
-		case 4:
-			return 0;
 	}
+	return 1;
 }
 
 int main(int argc, char *argv[])
@@ -155,7 +162,7 @@ int main(int argc, char *argv[])
   		//soc->saveObj(soc);
   	}
   	destroyObj(soc);
-	while(elegirOpcion());		
+	while(menuPrincipal());		
 	system("PAUSE");
   	return 0;
 }
