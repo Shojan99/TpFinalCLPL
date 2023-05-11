@@ -26,7 +26,7 @@ int menu(char * msg, int tope)
 
 int menuIngreso()
 {
-	switch(menu("Menu de ingreso de informacion\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - Inscribirse a una nueva actividad\n9 - Salir\n", 9))
+	switch(menu("Menu de ingreso de informacion\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - Inscribirse a una nueva actividad\n9 - Ingresar Cuota\n0 - Salir\n", 9))
 	{
 		case 0:
 			return 1;
@@ -63,7 +63,7 @@ int menuIngreso()
 
 int menuActualizar() 
 {
-	switch(menu("Menu de actualizacion de informacion\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - Inscribirse a una nueva actividad\n9 - Salir\n", 9))
+	switch(menu("Menu de actualizacion de informacion\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - actividad de socio\n 9 - Actualizar Cuota\n0 - Salir\n", 9))
 	{
 		case 0:
 			return 1;
@@ -100,7 +100,7 @@ int menuActualizar()
 
 int menuLista()
 {
-	switch(menu("Menu de listado de informacion\n1 - Socios activos\n2 - Socios morosos\n3 - Horarios en la semana\n4 - Actividades de x socio\n5 - Listado de cuotas\n9 - Salir\n", 9))
+	switch(menu("Menu de listado de informacion\n1 - Socios activos\n2 - Socios morosos\n3 - Horarios en la semana\n4 - Actividades de x socio\n5 - Listado de cuotas\n0 - Salir\n", 9))
 	{
 		case 0:
 			return 1;
@@ -125,7 +125,7 @@ int menuLista()
 
 int menuPrincipal()
 {
-	switch(menu("Menu de opciones\n1 - Ingresos\n2 - Actualizaciones\n3 - Listados\n4 - Salir\n", 4))
+	switch(menu("Menu de opciones\n1 - Ingresos\n2 - Actualizaciones\n3 - Listados\n0 - Salir\n", 4))
 	{
 		case 0:
 			return 0;
