@@ -190,7 +190,7 @@ void actualizarActividad(){
 	}
 	destroyObj(act);
 }
-
+/*
 void listarActividades(){
     printf("[ Listado de Actividades ]\n");
     int i;
@@ -208,6 +208,7 @@ void listarActividades(){
     destroyObj(loc);
     
 }
+*/
 //----------------------------------------------------
 //implementacion constructor
 //----------------------------------------------------
