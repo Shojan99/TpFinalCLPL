@@ -13,13 +13,11 @@ THIS(obj_ActividadSocio)// crea definicion de funcion this para este modulo. .. 
 static void toString_ActividadSocioImpl(void *self)
 {
     obj_ActividadSocio *obj=this(self);     
-    obj_Actividad *act = obj->getActividadObj(obj);
-    obj_Socio *soc = obj->getSocioObj(obj);
     // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
     printf("Codigo Actividad-Socio: %d\n - Codigo Socio: %d\n - Codigo actividad: %d\n - Fecha Inicio: %s\n - Fecha Fin: %s\n",
-	obj->getCodigo(obj), 
-	soc->getNroSocio(soc),
-	act->getCodigo(act), 
+	obj->getCodigo(obj),
+	obj->getNroSocio(obj),
+	obj->getCodAct(obj), 
 	obj->getFechaInicio(obj),
 	obj->getFechaFin(obj));
     // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
