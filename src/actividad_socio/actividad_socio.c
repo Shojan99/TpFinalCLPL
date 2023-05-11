@@ -165,7 +165,7 @@ static void *init_ActividadSocio(void *self)
   obj->getFechaFin 		= getFechaFinActividadSocio_Impl;
   /// setters  
   obj->setCodigo 		= setCodigoActividadSocio_Impl;
-  obj->getNroSocio		= getNroSocioActividadSocio_Impl;
+  obj->setNroSocio		= setNroSocioActividadSocio_Impl;
   obj->setCodAct		= setCodActActividadSocio_Impl;    
   obj->setFechaInicio	= setFechaInicioActividadSocio_Impl;
   obj->setFechaFin 		= setFechaFinActividadSocio_Impl;
