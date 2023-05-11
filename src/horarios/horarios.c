@@ -75,6 +75,15 @@ static void destroyInternalAct_Impl(void *self)
 //----------------------------------------------------
 //implementacion de relaciones
 //----------------------------------------------------
+obj_Actividad *getActividad_HorarioObj_Impl(void *self)
+{
+	obj_Horario *obj = this(self);	
+	//acceso a la informacion relacionada
+	return NULL;
+}
+//----------------------------------------------------
+//implementacion ingresos
+//----------------------------------------------------
 void ingresarHorario(){
     obj_Horario *horario; 
     horario = Horario_new(); 
@@ -111,11 +120,24 @@ void ingresarHorario(){
     destroyObj(horario);
 
 }
-obj_Actividad *getActividad_HorarioObj_Impl(void *self)
-{
-	obj_Horario *obj = this(self);	
-	//acceso a la informacion relacionada
-	return NULL;
+//----------------------------------------------------
+//implementacion listados
+//----------------------------------------------------
+void listarHorarios(){
+    printf("[ Listado de horarios ]\n");
+    int i;
+    void *list;
+    obj_Horario *hor;    
+    obj_Horario *itm;
+    hor = Horario_new();
+    int size = hor->findAll(hor,&list,NULL);
+    for(i=0;i<size;++i)
+    {
+        itm = ((Object **)list)[i];    
+        ((Object *)itm)->toString(itm);
+    }
+    destroyObjList(list,size);
+    destroyObj(hor);
 }
 //----------------------------------------------------
 //implementacion constructor
@@ -158,22 +180,3 @@ obj_Horario *Horario_new()
   return (obj_Horario *)init_obj(sizeof(obj_Horario), init_Horario);
 }
 //----------------------------------------------------
-//----------------------------------------------------
-//implementacion listados
-//----------------------------------------------------
-void listarHorarios(){
-    printf("[ Listado de horarios ]\n");
-    int i;
-    void *list;
-    obj_Horario *hor;    
-    obj_Horario *itm;
-    hor = Horario_new();
-    int size = hor->findAll(hor,&list,NULL);
-    for(i=0;i<size;++i)
-    {
-        itm = ((Object **)list)[i];    
-        ((Object *)itm)->toString(itm);
-    }
-    destroyObjList(list,size);
-    destroyObj(hor);
-}
