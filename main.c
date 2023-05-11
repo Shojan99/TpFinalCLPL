@@ -11,7 +11,7 @@
 #include "includes/includes.h"
 
 
-int mostrarMenu(char * msg, int tope)
+int menu(char * msg, int tope)
 {
 	int opcion = 0;
 	do{
