@@ -118,10 +118,15 @@ void listarActividadesSocio(){
     printf("[ Listado de actividades de socio ]\n");
     int i;
     void *list;
+    char cod[20],filtro[] = "nro_socio=";
+    printf("Ingrese el nro de socio que desea buscar sus actividades\n");
+    fflush(stdin);
+	fgets(cod,20,stdin);
+	strcat(filtro, cod);
     obj_ActividadSocio *actSoc;    
     obj_ActividadSocio *itm;
     actSoc = ActividadSocio_new();
-    int size = actSoc->findAll(actSoc,&list,NULL);
+    int size = actSoc->findAll(actSoc,&list,filtro);
     for(i=0;i<size;++i)
     {
         itm = ((Object **)list)[i];    

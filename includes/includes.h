@@ -13,6 +13,7 @@
 #include "../src/actividad/actividad.h"
 #include "../src/actividad_socio/actividad_socio.h"
 #include "../src/cuotas/cuotas.h"
+#include "../src/lugar/lugar.h"
 #include "../src/horarios/horarios.h"
 #include "../src/importe_actividad/importe_actividad.h"
 
