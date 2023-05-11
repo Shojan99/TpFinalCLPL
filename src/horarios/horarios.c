@@ -20,7 +20,7 @@ static void toString_HorarioImpl(void *self)
      obj->getDia(obj), 
      obj->getHoraDesde(obj),
      obj->getHoraHasta(obj));
-     //lug->getLugar(lug)
+     //lug->getNombre(lug)
      // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
      printf("\n"); 
 }
@@ -79,24 +79,46 @@ obj_Actividad *getActividad_HorarioObj_Impl(void *self)
 {
 	obj_Horario *obj = this(self);	
 	//acceso a la informacion relacionada
+	if(obj->actividad == NULL)
+	{
+		obj->actividad = Actividad_new();
+		obj->actividad->findbykey(obj->actividad,obj->getCodAct(obj));
+		return obj->actividad;
+	}
 	return NULL;
 }
+
+//----------------------------------------------------
+/*obj_Lugar *getLugar_HorarioObj_Impl(void *self)  
+{
+	obj_Horario *obj = this(self);	
+	//acceso a la informacion relacionada
+	if(obj->lugar == NULL)
+	{
+		obj->lugar = Lugar_new();
+		obj->lugar->findbykey(obj->lugar,obj->getLugar(obj));  //no se puede hacer findkey porque lugar es una cadrena (asi esta definido en la base)
+		return obj->lugar;
+	}
+	return NULL;
+}*/
 //----------------------------------------------------
 //implementacion ingresos
 //----------------------------------------------------
 void ingresarHorario(){
     obj_Horario *horario; 
     horario = Horario_new(); 
-    int dia,codAct;
-    char horaDesde[6],horaHasta[6],lugar[90];
+    int dia,codAct;  //codLug
+    char horaDesde[6],horaHasta[6], lugar[90]; //
 
     fflush(stdin);
-    printf("Ingrese el lugar\n");
+    printf("Ingrese el codigo del lugar\n");
     fflush(stdin);
     fgets(lugar,90,stdin);
     horario->setLugar(horario,lugar);
+    //scanf("%d",&codLug);
+    //horario->setCodLugar(horario,codLug);
     
-    printf("Ingrese el dia\n");
+	printf("Ingrese el dia\n");
     scanf("%d",&dia);
     horario->setDia(horario,dia);
 
@@ -150,6 +172,7 @@ static void *init_Horario(void *self)
   obj->sizeObj 		    = sizeof(obj_Horario*);
   // inicializar cada puntero a una referencia relacionada, para ver cuando se busca por el id..
   obj->actividad        = NULL;
+  //obj->lugar       		= NULL;
   //incializacion de la interfaz de la entidad
   obj->toString    		= toString_HorarioImpl;
   // Inicializar handlers de getters y setters
@@ -159,18 +182,20 @@ static void *init_Horario(void *self)
   obj->getCodAct		= getCodActHorario_Impl;
   obj->getHoraDesde		= getHoraDesdeHorario_Impl;
   obj->getHoraHasta		= getHoraHastaHorario_Impl;
-  obj->getLugar			= getLugarHorario_Impl;
+  //obj->getLugar			= getLugarHorario_Impl;
   /// setters  
   obj->setCodigo 		= setCodigoHorario_Impl;
   obj->setDia			= setDiaHorario_Impl;    
   obj->setCodAct 		= setCodActHorario_Impl;
   obj->setHoraDesde		= setHoraDesdeHorario_Impl;
   obj->setHoraHasta		= setHoraHastaHorario_Impl;
-  obj->setLugar			= setLugarHorario_Impl;
+  //obj->setLugar			= setLugarHorario_Impl;
   // implementar detroy internal para liberar recursos  
   obj->destroyInternal 	= destroyInternalAct_Impl;
   //---- acceso a relaciones  
   obj->getActividadObj 	= getActividad_HorarioObj_Impl;  
+  //obj->getLugarObj 		= getLugar_HorarioObj_Impl;  
+  
   return obj;
 }
 //----------------------------------------------------

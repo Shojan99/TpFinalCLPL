@@ -28,11 +28,11 @@
 		
 	    // getter de objeto relacionado
 		getActividadObjPtr  getActividadObj;
-		getLugarObjPtr  	getLugarObj;
+		//getLugarObjPtr  	getLugarObj;
 	    obj_Actividad 		*actividad;
 	    
-	    getLugarPtr  getLugarObj;
-        obj_Lugar        *lugar;
+	    //getLugarPtr  getLugarObj;
+        //obj_Lugar        *lugar;
 	}obj_Horario;
 	// funcionalidad publica que se implementa en actividad_socio.c
 	extern obj_Horario *Horario_new ();
