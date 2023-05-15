@@ -16,23 +16,24 @@
 		getPropertyIntPtr   getCodAct;		
 		getPropertyCharPtr  getHoraDesde;
 		getPropertyCharPtr  getHoraHasta;
-		getPropertyCharPtr  getLugar;
+		getPropertyCharPtr  getCodLugar;
 		
 	    //-- setters
+	    setPropertyIntPtr	setCodLugar;
 	    setPropertyIntPtr   setCodigo;
 		setPropertyIntPtr   setDia;
 		setPropertyIntPtr   setCodAct;		
 		setPropertyCharPtr  setHoraDesde;
 		setPropertyCharPtr  setHoraHasta;
-		setPropertyCharPtr  setLugar;
+		//setPropertyCharPtr  setLugar;
 		
 	    // getter de objeto relacionado
 		getActividadObjPtr  getActividadObj;
-		//getLugarObjPtr  	getLugarObj;
 	    obj_Actividad 		*actividad;
 	    
-	    //getLugarPtr  getLugarObj;
-        //obj_Lugar        *lugar;
+	    //geter del objeto relacionado
+        getLugarObjPtr getLugarObj;
+        obj_Lugar        *lugar;
 	}obj_Horario;
 	// funcionalidad publica que se implementa en actividad_socio.c
 	extern obj_Horario *Horario_new ();
@@ -46,7 +47,7 @@
 	{"cod_act",t_int,sizeof(int),false,false},	
 	{"hora_desde",t_varchar,(sizeof(char)*MAXHORAMIN)+1,false,false},	
 	{"hora_hasta",t_varchar,(sizeof(char)*MAXHORAMIN)+1,false,false},
-	{"lugar",t_varchar,(sizeof(char)*MAX90)+1,false,false},
+	{"cod_lugar",t_int,sizeof(int),false,false},
 	};
 	// plantilla para la Actividad.
 	static Table table_Horario={"horarios",CNT_COL_HOR,0, cols_Horario,NULL};

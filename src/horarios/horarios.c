@@ -2,8 +2,8 @@
 #include "../tipo_actividad/tipo_actividad.h"
 #include "../profesor/profesor.h"
 #include "../actividad/actividad.h"
-
-#include "horarios.h"
+#include "../lugar/lugar.h"
+#include "../horarios/horarios.h"
 
 THIS(obj_Horario)// crea definicion de funcion this para este modulo. .. Macro en config.h
 
@@ -11,16 +11,18 @@ THIS(obj_Horario)// crea definicion de funcion this para este modulo. .. Macro e
 static void toString_HorarioImpl(void *self)
 {
      obj_Horario *obj=this(self);     
-     //obj_Lugar *lug = obj->getLugarObj(obj);
+     obj_Lugar *lug = obj->getLugarObj(obj);
      obj_Actividad *act = obj->getActividadObj(obj);
-     obj_TipoActividad *t_act = act->getTipoActividadObj(act);
+     //obj_TipoActividad *t_act = act->getTipoActividadObj(act);
      // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
-     printf("Actividad:%s\nDia:%d\nHora Desde:%s\nHora Hasta:%s\n",
-     t_act->getNombre(obj), 
+     printf("Actividad:%s\nDia:%d\nHora Desde:%s\nHora Hasta:%s\nLugar: %s\n",
+     act->getCodTipoAct(act),
+	 //t_act->getNombre(obj), 
      obj->getDia(obj), 
      obj->getHoraDesde(obj),
      obj->getHoraHasta(obj));
-     //lug->getNombre(lug)
+     //obj->getCodLugar(obj);
+     lug->getNombre(lug);
      // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
      printf("\n"); 
 }
@@ -42,8 +44,8 @@ static char *getHoraDesdeHorario_Impl(void *self)
 static char *getHoraHastaHorario_Impl(void *self)
 { return  (char *) getValue(self,POS_HORA_HASTA_HOR); }
 //----------------------------------------------------
-static char *getLugarHorario_Impl(void *self)
-{ return  (char *) getValue(self,POS_LUGAR_HOR); }
+static char *getCodLugarHorario_Impl(void *self)
+{ return  *((int*) getValue(self,POS_LUGAR_HOR)); }
 //----------------------------------------------------
 //implementacion setters
 //----------------------------------------------------
@@ -62,8 +64,8 @@ static void setHoraDesdeHorario_Impl(void *self,char *hdesde)
 static void setHoraHastaHorario_Impl(void *self,char *hhasta)
 { setValue(self,POS_HORA_HASTA_HOR,hhasta); }
 //----------------------------------------------------
-static void setLugarHorario_Impl(void *self,char *fdesde)
-{ setValue(self,POS_LUGAR_HOR,fdesde); }
+static void setCodLugarHorario_Impl(void *self,int val)
+{ setValue(self,POS_LUGAR_HOR,&val); }
 //----------------------------------------------------
 static void destroyInternalAct_Impl(void *self)
 {
@@ -96,27 +98,40 @@ obj_Actividad *getActividad_HorarioObj_Impl(void *self)
 	if(obj->lugar == NULL)
 	{
 		obj->lugar = Lugar_new();
-		obj->lugar->findbykey(obj->lugar,obj->getLugar(obj));  //no se puede hacer findkey porque lugar es una cadrena (asi esta definido en la base)
+		obj->lugar->findbykey(obj->lugar,obj->getCodLugar(obj));  //no se puede hacer findkey porque lugar es una cadrena (asi esta definido en la base)
 		return obj->lugar;
 	}
 	return NULL;
 }*/
+
+obj_Lugar *getLugar_HorarioObj_Impl(void *self)
+{
+	obj_Horario *obj = this(self);	
+	if(obj->lugar== NULL)
+	{
+		obj->lugar = Localidad_new();
+		obj->lugar->findbykey(obj->lugar,obj->getCodLugar(obj));
+		return obj->lugar;
+	}
+	//acceso a la informacion relacionada
+	return NULL;
+}
 //----------------------------------------------------
 //implementacion ingresos
 //----------------------------------------------------
 void ingresarHorario(){
     obj_Horario *horario; 
     horario = Horario_new(); 
-    int dia,codAct;  //codLug
-    char horaDesde[6],horaHasta[6], lugar[90]; //
+    int dia,codAct, codLug;  
+	char horaDesde[6],horaHasta[6]; //
 
     fflush(stdin);
     printf("Ingrese el codigo del lugar\n");
     fflush(stdin);
-    fgets(lugar,90,stdin);
-    horario->setLugar(horario,lugar);
-    //scanf("%d",&codLug);
+    //fgets(lugar,90,stdin);
     //horario->setCodLugar(horario,codLug);
+    scanf("%d",&codLug);
+    horario->setCodLugar(horario,codLug);
     
 	printf("Ingrese el dia\n");
     scanf("%d",&dia);
@@ -137,7 +152,7 @@ void ingresarHorario(){
     horario->setHoraHasta(horario,horaHasta);
     if(!horario->saveObj(horario))
     {
-        printf("Ocurrio un error al agregar tipo de actividad:\n%s\n",getLastError());
+        printf("Ocurrio un error al agregar un horario:\n%s\n",getLastError());
     }
     destroyObj(horario);
 
@@ -182,19 +197,20 @@ static void *init_Horario(void *self)
   obj->getCodAct		= getCodActHorario_Impl;
   obj->getHoraDesde		= getHoraDesdeHorario_Impl;
   obj->getHoraHasta		= getHoraHastaHorario_Impl;
-  //obj->getLugar			= getLugarHorario_Impl;
+  obj->getCodLugar		= getCodLugarHorario_Impl;
   /// setters  
   obj->setCodigo 		= setCodigoHorario_Impl;
   obj->setDia			= setDiaHorario_Impl;    
   obj->setCodAct 		= setCodActHorario_Impl;
   obj->setHoraDesde		= setHoraDesdeHorario_Impl;
   obj->setHoraHasta		= setHoraHastaHorario_Impl;
+  obj->setCodLugar		= setCodLugarHorario_Impl;
   //obj->setLugar			= setLugarHorario_Impl;
   // implementar detroy internal para liberar recursos  
   obj->destroyInternal 	= destroyInternalAct_Impl;
   //---- acceso a relaciones  
   obj->getActividadObj 	= getActividad_HorarioObj_Impl;  
-  //obj->getLugarObj 		= getLugar_HorarioObj_Impl;  
+  obj->getLugarObj 		= getLugar_HorarioObj_Impl;  
   
   return obj;
 }

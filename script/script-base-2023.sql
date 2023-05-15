@@ -65,3 +65,5 @@ alter table cuotas add constraint fk_cuotas_actividad_socio foreign key (cod_act
 
 create table horarios(codigo serial primary key, dia int,cod_act int,hora_desde timestamp,hora_hasta timestamp, lugar varchar(90));
 alter table horarios add constraint fk_horarios_actividad foreign key (cod_act) references actividad(codigo);
+alter table horarios add cod_lugar int;
+alter table horarios add constraint fk_horarios_lugar foreign key (cod_lugar) references lugar(codigo);

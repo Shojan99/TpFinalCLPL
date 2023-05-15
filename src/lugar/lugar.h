@@ -26,5 +26,5 @@
 	};
 	// plantilla para la TipoActividad.
 	static Table table_Lugar={"lugar",CNT_COL_LUGAR,0, cols_Lugar,NULL};
-	typedef obj_Lugar *(*getLugarPtr)(void *self);
+	typedef obj_Lugar *(*getLugarObjPtr)(void *self);
 #endif
