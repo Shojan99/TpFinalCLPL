@@ -4,27 +4,37 @@
 #include "../actividad/actividad.h"
 #include "../lugar/lugar.h"
 #include "../horarios/horarios.h"
-
+#include <string.h>
+#define MAXIMA_LONGITUD_CADENA 6
 THIS(obj_Horario)// crea definicion de funcion this para este modulo. .. Macro en config.h
 
 //----------------------------------------------------
 static void toString_HorarioImpl(void *self)
 {
-     obj_Horario *obj=this(self);     
+
+	 obj_Horario *obj=this(self);     
      obj_Lugar *lug = obj->getLugarObj(obj);
      obj_Actividad *act = obj->getActividadObj(obj);
+
+     int cantidadCaracteres = 5;
+     char horaAcotada[MAXIMA_LONGITUD_CADENA] = "";
+     char horaAcotada2[MAXIMA_LONGITUD_CADENA] = "";
+    // Extraer
+    strncpy(horaAcotada, obj->getHoraDesde(obj), cantidadCaracteres);
+    strncpy(horaAcotada2, obj->getHoraHasta(obj), cantidadCaracteres);
      //obj_TipoActividad *t_act = act->getTipoActividadObj(act);
      // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
-     printf("Actividad:%s\nDia:%d\nHora Desde:%s\nHora Hasta:%s\nLugar: %s\n",
+     printf("Actividad:%d\nDia:%d\nHora Desde:%s\nHora Hasta:%s\nLugar: %s\n",
      act->getCodTipoAct(act),
 	 //t_act->getNombre(obj), 
      obj->getDia(obj), 
-     obj->getHoraDesde(obj),
-     obj->getHoraHasta(obj));
+     horaAcotada,
+     horaAcotada2,
      //obj->getCodLugar(obj);
-     lug->getNombre(lug);
+     lug->getNombre(lug));
      // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
      printf("\n"); 
+     destroyObj(obj);
 }
 //----------------------------------------------------
 //implementacion de getters
@@ -109,7 +119,7 @@ obj_Lugar *getLugar_HorarioObj_Impl(void *self)
 	obj_Horario *obj = this(self);	
 	if(obj->lugar== NULL)
 	{
-		obj->lugar = Localidad_new();
+		obj->lugar = Lugar_new();
 		obj->lugar->findbykey(obj->lugar,obj->getCodLugar(obj));
 		return obj->lugar;
 	}
@@ -125,9 +135,7 @@ void ingresarHorario(){
     int dia,codAct, codLug;  
 	char horaDesde[6],horaHasta[6]; //
 
-    fflush(stdin);
     printf("Ingrese el codigo del lugar\n");
-    fflush(stdin);
     //fgets(lugar,90,stdin);
     //horario->setCodLugar(horario,codLug);
     scanf("%d",&codLug);
