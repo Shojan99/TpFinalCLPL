@@ -1,6 +1,7 @@
 #include "../../includes/includelib.h"
 #include "../localidad/localidad.h"
 #include "socio.h"
+#include <stdlib.h>
 
 THIS(obj_Socio)// crea definicion de funcion this para este modulo. .. Macro en config.h
 
@@ -8,6 +9,7 @@ THIS(obj_Socio)// crea definicion de funcion this para este modulo. .. Macro en 
 static void toString_SocioImpl(void *self)
 {
      obj_Socio *obj=this(self);     
+     
      obj_Localidad *loc = obj->getLocalidadObj(obj);
      // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
      printf("Nro.Socio: %d - Dni: %d - Apellido,Nombres:%s,%s - Activo:%d  - Localidad:%s\n",
@@ -19,6 +21,7 @@ static void toString_SocioImpl(void *self)
 	 loc->getNombre(loc)
 	 ); // 1:true(en la base) - 0:false(en la base) -- activo / moroso
 }
+
 //----------------------------------------------------
 //implementacion de getters
 //----------------------------------------------------
@@ -251,23 +254,59 @@ void actualizarSocio(){
 	destroyObj(soc);	
 	
 }
+int comparaDescendente(const void *a, const void *b) {
+   const obj_Socio *socio_a = *(const obj_Socio **)a;
+    const obj_Socio *socio_b = *(const obj_Socio **)b;
 
+    return strcmp(socio_a->getNombres(socio_a), socio_b->getNombres(socio_b));
+}
+int comparaAscendente(const void *a, const void * b)
+{
+	const obj_Socio *socio_a = *(const obj_Socio **)a;
+    const obj_Socio *socio_b = *(const obj_Socio **)b;
+
+    return strcmp(socio_b->getNombres(socio_b), socio_a->getNombres(socio_a));
+}
+	
 void listarSocios(char filtro[]){
-    printf("[ Listado de socios ]\n");
-    int i;
-    void *list;
+	int aux;
+	int i;
+
+	do{ 
+	 void *list;
     obj_Socio *soc;
     obj_Socio *itm;
     soc = Socio_new();
+	printf("Como desea ordenarlos? Ascendente presione 1 y descendente precione 2\n");
+	scanf("%d",&aux);
+    printf("[ Listado de socios ]\n");
+ 
     int size = soc->findAll(soc,&list,filtro);
-    for(i=0;i<size;++i)
-    {
-    	itm = ((Object **)list)[i];
-    	((Object *)itm)->toString(itm);
-
-    }
-    destroyObjList(list,size);
+    switch(aux){
+    	case 1:
+			qsort(list, size, sizeof(obj_Socio*), comparaAscendente);
+	    	for(i=0;i<size;++i)
+	    	{
+		    	itm = ((Object **)list)[i];
+		    	((Object *)itm)->toString(itm);
+	    	} 	
+		break;
+		case 2:	
+			qsort(list, size, sizeof(obj_Socio*), comparaDescendente);	
+			for(i=0;i<size;++i)
+	    	{
+		    	itm = ((Object **)list)[i];
+		    	((Object *)itm)->toString(itm);
+	    	} 
+    	break;
+    	default:
+    		system("cls");
+    		printf("Ingrese un valor valido\n");
+	}
+  	destroyObjList(list,size);
     destroyObj(soc);
+}while(aux!=2 && aux !=1);
+   
 }
 
 //----------------------------------------------------
