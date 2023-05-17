@@ -7,6 +7,7 @@
 #include "../actividad_socio/actividad_socio.h"
 #include "../importe_actividad/importe_actividad.h"
 #include "cuotas.h"
+#include <stdlib.h>
 
 THIS(obj_Cuotas)// crea definicion de funcion this para este modulo. .. Macro en config.h
 
@@ -137,9 +138,9 @@ void ingresarCuota()
     obj_Cuotas *cuota;
     cuota = Cuotas_new();
     int codActSocio, cod_socio,anio,mes;
-    double importe;
+    float importe;
     char filtro[100];
-    char  fechaVencimiento[12], fechaPago[12], estado[1];
+    char  fechaVencimiento[12], fechaPago[12], estado[2];
     
     printf("Ingrese el codigo del socio\n");
     scanf("%d",&cod_socio);
@@ -167,17 +168,20 @@ void ingresarCuota()
             obj_Actividad *itm = ((obj_Actividad **)ActividadList)[j];
             int codigoTipoAct = itm->getCodTipoAct(itm);
             int k;
-            void *ImporteActividadList;
             sprintf(filtro, "cod_tipo_act=%d", codigoTipoAct); 
+            void *ImporteActividadList;
+            ((Object *)itm)->toString(itm);
+            
             int ImporteActividadSize = impAct->findAll(impAct, &list, filtro); 
             for (k = 0; k < ImporteActividadSize; k++) {
             	obj_ImporteActividad *itmImpAct = ((obj_ImporteActividad **)ImporteActividadList)[k];
+            	((Object *)itmImpAct)->toString(itmImpAct);
             	importe += itmImpAct->getImporte(itmImpAct);
             }
+            cuota->setImporte(cuota, importe);
             destroyObjList(ImporteActividadList, ImporteActividadSize);
         }
         cuota->setCodActSocio(cuota,itmActSoc->getCodAct(itmActSoc));
-        cuota->setImporte(cuota, importe);
 	    destroyObjList(ActividadList, actividadSize);
         destroyObjList(list, size);
 	}	
@@ -193,18 +197,18 @@ void ingresarCuota()
     //fflush(stdin);
     printf("ingrese el estado\n");
     fflush(stdin);
-    fgets(estado,1,stdin);
+    fgets(estado,2,stdin);
     cuota->setEstado(cuota,estado);
     
     printf("ingrese la fecha de vencimiento\n");
     fflush(stdin);
     fgets(fechaVencimiento,12,stdin);
-    cuota->setFechaVenc(cuota,estado);
+    cuota->setFechaVenc(cuota,fechaVencimiento);
     
     printf("ingrese la fecha de pago\n");
     fflush(stdin);
     fgets(fechaPago,12,stdin);
-    cuota->setFechaPago(cuota,estado);
+    cuota->setFechaPago(cuota,fechaPago);
     
     //soc->setMoroso(soc,false);
 
@@ -215,5 +219,40 @@ void ingresarCuota()
     destroyObj(cuota);
 }
 
-void ListarCuotas(char filtro){
+void ListarCuotas() {
+    printf("[ Listado de cuotas ]\n");
+    
+    obj_Cuotas *cuo;
+    cuo = Cuotas_new();    
+    
+    obj_ActividadSocio *actSoc;
+    actSoc = ActividadSocio_new();  
+    
+    char tipoEstado;
+    printf("Ingrese el tipo de estado (I - Impagas, P - Pagas, A - Anuladas): ");
+    scanf(" %c", &tipoEstado);
+    
+    char fechaDesde[11];
+    char fechaHasta[11];
+    
+    printf("Ingrese la fecha de inicio (formato: DD/MM/AAAA): ");
+    scanf(" %s", fechaDesde);
+    
+    printf("Ingrese la fecha de fin (formato: DD/MM/AAAA): ");
+    scanf(" %s", fechaHasta);
+    
+    char filtro[100];
+    sprintf(filtro, "estado=%c AND fecha BETWEEN '%s' AND '%s'", tipoEstado, fechaDesde, fechaHasta);
+    
+    void *list;
+    int size = cuo->findAll(cuo, &list, filtro);
+    
+    int i;
+    for (i = 0; i < size; i++) {
+        obj_Cuotas *itm = ((obj_Cuotas **)list)[i];
+        ((Object *)itm)->toString(itm);
+    }
+    
+    destroyObjList(list, size);
+    destroyObj(cuo);
 }
