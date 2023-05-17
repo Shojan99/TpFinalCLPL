@@ -182,4 +182,76 @@ obj_ActividadSocio *ActividadSocio_new()
   return (obj_ActividadSocio *)init_obj(sizeof(obj_ActividadSocio), init_ActividadSocio);
 }
 //----------------------------------------------------
-
+void actualizarActividadSocio(){
+	obj_ActividadSocio *actS;
+    actS = ActividadSocio_new();
+    int nro_soc, cod_act,i,confirma,cod;
+    char fechaInicio[12], fechaFin[12];
+	printf("[ Actualizar Actividad Socio ]\nIngrese el codigo de la actividad socio a modificar\n");
+	scanf("%d",&cod);
+	
+	if(actS->findbykey(actS, cod) != NOT_FOUND){ 
+		
+		do{
+		system("cls");	
+		printf("Ingrese lo que desea modificar\n1 - numero de socio\n2 - codigo de actividad\n3 - fecha de inicio\n4 - fecha de fin\n");
+		scanf("%d",&i);
+		switch(i){
+			case 1:
+				printf("Ingrese el nuevo numero de socio\n");
+				scanf("%d",&nro_soc);
+				actS->setNroSocio(actS,nro_soc);
+				if(!actS->saveObj(actS))
+			  		{
+			  			printf("Ocurrio un error al actualizar el numero socio:\n%s\n",getLastError());
+			  		}
+			  	printf("Se actualizo el numero socio\n");
+			  	break;
+				  	
+			case 2:
+				
+				printf("Ingrese el nuevo numero de actividad\n");
+				scanf("%d",&cod_act);
+				actS->setCodAct(actS,cod_act);
+				if(!actS->saveObj(actS))
+			  		{
+			  			printf("Ocurrio un error al actualizar el codigo de actividad:\n%s\n",getLastError());
+			  		}
+			  	printf("Se actualizo el nuevo codigo de actividad\n");
+			  	break;
+			case 3:
+				printf("Ingrese la nueva fecha de inicio\n");
+			    fflush(stdin);
+			    fgets(fechaInicio,12,stdin);
+			    actS->setFechaInicio(actS,fechaInicio);
+				if(!actS->saveObj(actS))
+			  		{
+			  			printf("Ocurrio un error al actualizar la nueva fecha de inicio:\n%s\n",getLastError());
+			  		}
+			  	printf("Se actualizo la fecha de inicio\n");
+			  	break;
+			case 4:
+				printf("ingrese la fecha de fin\n");
+				fflush(stdin);
+				fgets(fechaFin,12,stdin);
+				actS->setFechaFin(actS,fechaFin);
+				if(!actS->saveObj(actS))
+			  		{
+			  			printf("Ocurrio un error al actualizar la nueva fecha de fin:\n%s\n",getLastError());
+			  		}
+			  	printf("Se actualizo la fecha de fin\n");
+			  	break;
+	  		  	
+			default:
+				printf("ingrese un valor valido\n");
+				break;
+		}
+		printf("Desea seguir ingresando?\n - Presione cualquier tecla para si y 0 para no\n");
+		scanf("%d",&confirma);
+		}while(confirma!=0);
+	}else{
+		system("cls");
+		printf("No se encontro la actividad socio\n");
+	}
+	destroyObj(actS);
+}
