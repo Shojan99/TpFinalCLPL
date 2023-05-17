@@ -4,6 +4,7 @@
 #include "../actividad/actividad.h"
 #include "../lugar/lugar.h"
 #include "../horarios/horarios.h"
+#include "../actividad_socio/actividad_socio.h"
 #include <string.h>
 #define MAXIMA_LONGITUD_CADENA 6
 #define CANTIDADCARACTERES 5
@@ -192,7 +193,7 @@ void listarHorariosProfesorSemana() {
     printf("[ Listado de horarios del profesor en la semana ]\n");
     
     int legajo_profe;
-    printf("Ingrese el código del legajo del profesor a buscar:\n");
+    printf("Ingrese el codigo del legajo del profesor a buscar:\n");
     scanf("%d", &legajo_profe);
     
     obj_Horario *hor;
@@ -223,7 +224,39 @@ void listarHorariosProfesorSemana() {
 }
 
 void listarHorariosSocioSemana() {
-    // en desarrollo
+    printf("[ Listado de horarios de un socio en la semana ]\n");
+    
+    int nro_socio;
+    printf("Ingrese el codigo del socio a buscar:\n");
+    scanf("%d", &nro_socio);
+    
+    obj_Horario *hor;
+    hor = Horario_new();    
+    
+    obj_ActividadSocio *actSoc;
+    actSoc = ActividadSocio_new();  
+    
+    char filtro[100];
+    sprintf(filtro, "nro_socio=%d", nro_socio);    
+    void *list;
+    int size = actSoc->findAll(actSoc, &list, filtro);    
+    int i;
+    for (i = 0; i < size; i++) {
+        obj_ActividadSocio *itmActSoc = ((obj_ActividadSocio **)list)[i];
+        int codigoAct = itmActSoc->getCodAct(itmActSoc);       
+        sprintf(filtro, "cod_act=%d", codigoAct);       
+        void *horarioList;
+        int horarioSize = hor->findAll(hor, &horarioList, filtro);        
+        int j;
+        for (j = 0; j < horarioSize; j++) {
+            obj_Horario *itm = ((obj_Horario **)horarioList)[j];
+            ((Object *)itm)->toString(itm);    
+        }
+        destroyObjList(horarioList, horarioSize);
+    }
+    destroyObjList(list, size);
+    destroyObj(hor);
+    destroyObj(actSoc);
 }
 //----------------------------------------------------
 //implementacion constructor

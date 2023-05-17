@@ -25,8 +25,11 @@
 	    // getter de objeto relacionado
 		getActividadObjPtr  getActividadObj;
 	    obj_Actividad 		*actividad;
-	    getSocioObjPtr 		getSocioObj;
-	    obj_Socio			*socio;
+	   	
+		   
+		//getSocioObjPtr 		getSocioObj;
+	   	//obj_Socio			*socio;
+	   	// comentar lo de arriba si da error, idk
 	}obj_ActividadSocio;
 	// funcionalidad publica que se implementa en actividad_socio.c
 	extern obj_ActividadSocio *ActividadSocio_new ();

@@ -5,6 +5,7 @@
 #include "../localidad/localidad.h"
 #include "../socio/socio.h"
 #include "../actividad_socio/actividad_socio.h"
+#include "../importe_actividad/importe_actividad.h"
 #include "cuotas.h"
 
 THIS(obj_Cuotas)// crea definicion de funcion this para este modulo. .. Macro en config.h
@@ -135,14 +136,51 @@ void ingresarCuota()
 {
     obj_Cuotas *cuota;
     cuota = Cuotas_new();
-    int codActSocio,anio,mes;
+    int codActSocio, cod_socio,anio,mes;
     double importe;
+    char filtro[100];
     char  fechaVencimiento[12], fechaPago[12], estado[1];
     
-    printf("Ingrese el codigo de actividad socio\n");
-   
-    scanf("%d",&codActSocio);
-    cuota->setCodActSocio(cuota,codActSocio);
+    printf("Ingrese el codigo del socio\n");
+    scanf("%d",&cod_socio);
+    sprintf(filtro, "nro_socio=%d", cod_socio);
+    
+    obj_ActividadSocio *actSoc;
+    actSoc = ActividadSocio_new(); 
+    obj_Actividad *act;
+    act = Actividad_new();
+    obj_ImporteActividad *impAct;
+    impAct = ImporteActividad_new();
+    
+    void *list;
+	int size = actSoc->findAll(actSoc, &list, filtro);    
+    int i, suma = 0;
+    for (i = 0; i < size; i++) {
+        obj_ActividadSocio *itmActSoc = ((obj_ActividadSocio **)list)[i];
+        int codigoAct = itmActSoc->getCodAct(itmActSoc);
+		      
+        sprintf(filtro, "cod_act=%d", codigoAct);       
+        void *ActividadList;
+        int actividadSize = act->findAll(act, &ActividadList, filtro);        
+        int j;
+        for (j = 0; j < actividadSize; j++) {
+            obj_Actividad *itm = ((obj_Actividad **)ActividadList)[j];
+            int codigoTipoAct = itm->getCodTipoAct(itm);
+            int k;
+            void *ImporteActividadList;
+            sprintf(filtro, "cod_tipo_act=%d", codigoTipoAct); 
+            int ImporteActividadSize = impAct->findAll(impAct, &list, filtro); 
+            for (k = 0; k < ImporteActividadSize; k++) {
+            	obj_ImporteActividad *itmImpAct = ((obj_ImporteActividad **)ImporteActividadList)[k];
+            	importe += itmImpAct->getImporte(itmImpAct);
+            }
+            destroyObjList(ImporteActividadList, ImporteActividadSize);
+        }
+        cuota->setCodActSocio(cuota,itmActSoc->getCodAct(itmActSoc));
+        cuota->setImporte(cuota, importe);
+	    destroyObjList(ActividadList, actividadSize);
+        destroyObjList(list, size);
+	}	
     
     printf("Ingrese el anio de pago\n");
     scanf("%d",&anio);
@@ -151,10 +189,6 @@ void ingresarCuota()
     printf("ingrese el mes\n");
     scanf("%d",&mes);
     cuota->setMes(cuota,mes);
-    
-    printf("ingrese el importe\n");
-    scanf("%d",&importe);
-    cuota->setImporte(cuota,importe);
 
     //fflush(stdin);
     printf("ingrese el estado\n");
@@ -179,4 +213,7 @@ void ingresarCuota()
         printf("Ocurrio un error al agregar la cuota:\n%s\n",getLastError());
     }
     destroyObj(cuota);
+}
+
+void ListarCuotas(char filtro){
 }

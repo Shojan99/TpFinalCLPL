@@ -100,7 +100,7 @@ int menuActualizar()
 
 int menuLista()
 {
-	switch(menu("Menu de listado de informacion\n1 - Socios activos\n2 - Socios morosos\n3 - Horarios en la semana\n4 - Horarios en la semana de profesores\n5 - Horarios en la semana de socios\n6 - Actividades de x socio\n7 - Listado de cuotas\n0 - Salir\n", 6))
+	switch(menu("Menu de listado de informacion\n1 - Socios activos\n2 - Socios morosos\n3 - Horarios en la semana\n4 - Horarios en la semana de profesores\n5 - Horarios en la semana de socios\n6 - Actividades de x socio\n7 - Listado de cuotas pagas\n8 - Listado de cuotas impagas\n9 - Listado de cuotas anuladas\n0 - Salir\n", 6))
 	{
 		case 0:
 			return 1;
@@ -116,14 +116,20 @@ int menuLista()
 		case 4:
 			listarHorariosProfesorSemana();
 			break;
-	//	case 5:
-			//listarHorariosSocioSemana();
-		//	break;
+		case 5:
+			listarHorariosSocioSemana();
+			break;
 		case 6:
 			listarActividadesSocio();
 			break;
 		case 7:
-			//ListarCuotas();
+			ListarCuotas('p');
+			break;
+		case 8:
+			ListarCuotas('i');
+			break;
+		case 9:
+			ListarCuotas('a');
 			break;
 	}
 	return 1;
