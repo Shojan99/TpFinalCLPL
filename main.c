@@ -26,7 +26,7 @@ int menu(char * msg, int tope)
 
 int menuIngreso()
 {
-	switch(menu("Menu de ingreso de informacion\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - Inscribirse a una nueva actividad\n9 - Ingresar Cuota\n0 - Salir\n", 9))
+	switch(menu("Menu de ingreso de informacion\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - Inscribirse a una nueva actividad\n9 - Ingresar el importe de una actividad\n0 - Salir\n", 9))
 	{
 		case 0:
 			return 1;
@@ -55,7 +55,7 @@ int menuIngreso()
 			ingresarActividadSocio();
 			break;
 		case 9:
-			ingresarCuota();
+			ingresarImporteActividad();
 			break;
 	}
 	return 1;
@@ -63,7 +63,7 @@ int menuIngreso()
 
 int menuActualizar() 
 {
-	switch(menu("Menu de actualizacion de informacion\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - actividad de socio\n 9 - Actualizar Cuota\n0 - Salir\n", 9))
+	switch(menu("Menu de actualizacion de informacion\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - actividad de socio\n9 - Actualizar el importe de una actividad\n0 - Salir\n", 9))
 	{
 		case 0:
 			return 1;
@@ -92,7 +92,7 @@ int menuActualizar()
 			//actualizarActividadSocio();
 			break;
 		case 9:
-			//actualizarCuota
+			actualizarImporteActividad();
 			break;
 	}
 	return 1;

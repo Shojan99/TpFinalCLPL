@@ -25,7 +25,7 @@ static void toString_HorarioImpl(void *self)
      //obj_TipoActividad *t_act = act->getTipoActividadObj(act);
      // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
      printf("Actividad:%d\nDia:%d\nHora Desde:%s\nHora Hasta:%s\nLugar: %s\n",
-     act->getCodTipoAct(act),
+     act->getCodigo(act),
 	 //t_act->getNombre(obj), 
      obj->getDia(obj), 
      horaAcotada,
@@ -34,7 +34,7 @@ static void toString_HorarioImpl(void *self)
      lug->getNombre(lug));
      // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
      printf("\n"); 
-     destroyObj(obj);
+     //destroyObj(obj);
 }
 //----------------------------------------------------
 //implementacion de getters
@@ -195,7 +195,7 @@ static void *init_Horario(void *self)
   obj->sizeObj 		    = sizeof(obj_Horario*);
   // inicializar cada puntero a una referencia relacionada, para ver cuando se busca por el id..
   obj->actividad        = NULL;
-  //obj->lugar       		= NULL;
+  obj->lugar       		= NULL;
   //incializacion de la interfaz de la entidad
   obj->toString    		= toString_HorarioImpl;
   // Inicializar handlers de getters y setters

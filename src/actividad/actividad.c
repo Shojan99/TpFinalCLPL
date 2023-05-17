@@ -105,10 +105,10 @@ void ingresarActividad(){
     fgets(fechaFin,12,stdin);
     act->setFechaFin(act,fechaFin);
     if(!act->saveObj(act))
-          {
+    {
               printf("Ocurrio un error al agregar actividad:\n%s\n",getLastError());
-          }
-          destroyObj(act);
+    }
+    destroyObj(act);
 }
 
 void actualizarActividad(){

@@ -4,8 +4,8 @@
 CPP      = g++.exe -D__DEBUG__
 CC       = gcc.exe -D__DEBUG__
 WINDRES  = windres.exe
-OBJ      = main.o lib/orm/orm.o lib/utils/utils.o src/localidad/localidad.o config/config.o lib/orm/query.o src/socio/socio.o src/profesor/profesor.o src/actividad/actividad.o src/tipo_actividad/tipo_actividad.o src/actividad_socio/actividad_socio.o src/cuotas/cuotas.o src/horarios/horarios.o src/importe_actividad/importe_actividad.o
-LINKOBJ  = main.o lib/orm/orm.o lib/utils/utils.o src/localidad/localidad.o config/config.o lib/orm/query.o src/socio/socio.o src/profesor/profesor.o src/actividad/actividad.o src/tipo_actividad/tipo_actividad.o src/actividad_socio/actividad_socio.o src/cuotas/cuotas.o src/horarios/horarios.o src/importe_actividad/importe_actividad.o
+OBJ      = main.o lib/orm/orm.o lib/utils/utils.o src/localidad/localidad.o config/config.o lib/orm/query.o src/socio/socio.o src/profesor/profesor.o src/actividad/actividad.o src/tipo_actividad/tipo_actividad.o src/actividad_socio/actividad_socio.o src/cuotas/cuotas.o src/horarios/horarios.o src/importe_actividad/importe_actividad.o src/lugar/lugar.o
+LINKOBJ  = main.o lib/orm/orm.o lib/utils/utils.o src/localidad/localidad.o config/config.o lib/orm/query.o src/socio/socio.o src/profesor/profesor.o src/actividad/actividad.o src/tipo_actividad/tipo_actividad.o src/actividad_socio/actividad_socio.o src/cuotas/cuotas.o src/horarios/horarios.o src/importe_actividad/importe_actividad.o src/lugar/lugar.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib32" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc "../../../../../../../Program Files (x86)/PostgreSQL/9.2/lib/libpq.lib" -m32 -g3
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/PostgreSQL/9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"C:/Program Files (x86)/PostgreSQL/9.2/include"
@@ -65,3 +65,6 @@ src/horarios/horarios.o: src/horarios/horarios.c
 
 src/importe_actividad/importe_actividad.o: src/importe_actividad/importe_actividad.c
 	$(CC) -c src/importe_actividad/importe_actividad.c -o src/importe_actividad/importe_actividad.o $(CFLAGS)
+
+src/lugar/lugar.o: src/lugar/lugar.c
+	$(CC) -c src/lugar/lugar.c -o src/lugar/lugar.o $(CFLAGS)
