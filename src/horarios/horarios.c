@@ -6,6 +6,7 @@
 #include "../horarios/horarios.h"
 #include <string.h>
 #define MAXIMA_LONGITUD_CADENA 6
+#define CANTIDADCARACTERES 5
 THIS(obj_Horario)// crea definicion de funcion this para este modulo. .. Macro en config.h
 
 //----------------------------------------------------
@@ -16,12 +17,11 @@ static void toString_HorarioImpl(void *self)
      obj_Lugar *lug = obj->getLugarObj(obj);
      obj_Actividad *act = obj->getActividadObj(obj);
 
-     int cantidadCaracteres = 5;
      char horaAcotada[MAXIMA_LONGITUD_CADENA] = "";
      char horaAcotada2[MAXIMA_LONGITUD_CADENA] = "";
     // Extraer
-    strncpy(horaAcotada, obj->getHoraDesde(obj), cantidadCaracteres);
-    strncpy(horaAcotada2, obj->getHoraHasta(obj), cantidadCaracteres);
+    strncpy(horaAcotada, obj->getHoraDesde(obj), CANTIDADCARACTERES);
+    strncpy(horaAcotada2, obj->getHoraHasta(obj), CANTIDADCARACTERES);
      //obj_TipoActividad *t_act = act->getTipoActividadObj(act);
      // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
      printf("Actividad:%d\nDia:%d\nHora Desde:%s\nHora Hasta:%s\nLugar: %s\n",
@@ -168,21 +168,62 @@ void ingresarHorario(){
 //----------------------------------------------------
 //implementacion listados
 //----------------------------------------------------
-void listarHorarios(){
-    printf("[ Listado de horarios ]\n");
-    int i;
-    void *list;
-    obj_Horario *hor;    
-    obj_Horario *itm;
+// Función para listar los horarios de un profesor en la semana
+void listarHorariosSemana() {
+    printf("[ Listado de horarios de la semana ]\n");
+    
+    obj_Horario *hor;
     hor = Horario_new();
-    int size = hor->findAll(hor,&list,NULL);
-    for(i=0;i<size;++i)
-    {
-        itm = ((Object **)list)[i];    
+        
+    void *list;
+    int size = hor->findAll(hor, &list, NULL);
+    
+    int i;
+    for (i = 0; i < size; i++) {
+        obj_Horario *itm = ((obj_Horario **)list)[i];
         ((Object *)itm)->toString(itm);
     }
-    destroyObjList(list,size);
+    
+    destroyObjList(list, size);
     destroyObj(hor);
+}
+
+void listarHorariosProfesorSemana() {
+    printf("[ Listado de horarios del profesor en la semana ]\n");
+    
+    int legajo_profe;
+    printf("Ingrese el código del legajo del profesor a buscar:\n");
+    scanf("%d", &legajo_profe);
+    
+    obj_Horario *hor;
+    hor = Horario_new();    
+    obj_Actividad *act;
+    act = Actividad_new();    
+    char filtro[100];
+    sprintf(filtro, "legajo_profe=%d", legajo_profe);    
+    void *list;
+    int size = act->findAll(act, &list, filtro);    
+    int i;
+    for (i = 0; i < size; i++) {
+        obj_Actividad *itmAct = ((obj_Actividad **)list)[i];
+        int codigoAct = itmAct->getCodigo(itmAct);       
+        sprintf(filtro, "cod_act=%d", codigoAct);       
+        void *horarioList;
+        int horarioSize = hor->findAll(hor, &horarioList, filtro);        
+        int j;
+        for (j = 0; j < horarioSize; j++) {
+            obj_Horario *itm = ((obj_Horario **)horarioList)[j];
+            ((Object *)itm)->toString(itm);    
+        }
+        destroyObjList(horarioList, horarioSize);
+    }
+    destroyObjList(list, size);
+    destroyObj(hor);
+    destroyObj(act);
+}
+
+void listarHorariosSocioSemana() {
+    // en desarrollo
 }
 //----------------------------------------------------
 //implementacion constructor
