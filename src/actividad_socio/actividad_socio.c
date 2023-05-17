@@ -68,7 +68,19 @@ static void destroyInternalAct_Impl(void *self)
 //----------------------------------------------------
 //implementacion de relaciones
 //----------------------------------------------------
+obj_Actividad *getActividad_ActividadSocioObj_Impl(void *self)
+{
+	obj_ActividadSocio *obj = this(self);	
+	//acceso a la informacion relacionada
+	return NULL;
+}
 
+obj_Socio *getSocio_ActividadSocioObj_Impl(void *self)
+{
+	obj_ActividadSocio *obj = this(self);	
+	//acceso a la informacion relacionada
+	return NULL;
+}
 //----------------------------------------------------
 //implementacion ingresos
 //----------------------------------------------------
@@ -103,12 +115,7 @@ void ingresarActividadSocio() //consultar el static void!!!
     }
     destroyObj(actSoc);
 }
-obj_Actividad *getActividad_ActividadSocioObj_Impl(void *self)
-{
-	obj_ActividadSocio *obj = this(self);	
-	//acceso a la informacion relacionada
-	return NULL;
-}
+
 //----------------------------------------------------
 //implementacion listados
 //----------------------------------------------------
@@ -134,12 +141,7 @@ void listarActividadesSocio(){
     destroyObj(actSoc);
 }
 //----------------------------------------------------
-obj_Socio *getSocio_ActividadSocioObj_Impl(void *self)
-{
-	obj_ActividadSocio *obj = this(self);	
-	//acceso a la informacion relacionada
-	return NULL;
-}
+
 //----------------------------------------------------
 //implementacion constructor
 //----------------------------------------------------

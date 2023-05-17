@@ -223,7 +223,7 @@ void listarHorariosProfesorSemana() {
     destroyObj(act);
 }
 
-void listarHorariosSocioSemana() {
+void listarHorariosSocioSemana() {/*
     printf("[ Listado de horarios de un socio en la semana ]\n");
     
     int nro_socio;
@@ -256,7 +256,7 @@ void listarHorariosSocioSemana() {
     }
     destroyObjList(list, size);
     destroyObj(hor);
-    destroyObj(actSoc);
+    destroyObj(actSoc);*/
 }
 //----------------------------------------------------
 //implementacion constructor

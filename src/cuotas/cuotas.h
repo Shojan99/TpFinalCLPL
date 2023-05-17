@@ -9,6 +9,7 @@
 	#define POS_IMPORTE_CUOT 5
 	#define POS_FVENC_CUOT 6
 	#define POS_FPAGO_CUOT 7
+	#include "../actividad_socio/actividad_socio.h"
 
 	//----------------------------------------------------
 	typedef struct {	    

@@ -6,6 +6,8 @@
 	#define POS_COD_ACT_ACTSOCIO 2
 	#define POS_FECHA_INICIO_ACTSOCIO 3
 	#define POS_FECHA_FIN_ACTSOCIO 4
+	#include "../socio/socio.h"
+	#include "../actividad/actividad.h"
 
 	//----------------------------------------------------
 	typedef struct {	    
@@ -26,9 +28,8 @@
 		getActividadObjPtr  getActividadObj;
 	    obj_Actividad 		*actividad;
 	   	
-		   
-		//getSocioObjPtr 		getSocioObj;
-	   	//obj_Socio			*socio;
+		getSocioObjPtr 		getSocioObj;
+	   	obj_Socio			*socio;
 	   	// comentar lo de arriba si da error, idk
 	}obj_ActividadSocio;
 	// funcionalidad publica que se implementa en actividad_socio.c

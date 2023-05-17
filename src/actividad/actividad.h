@@ -6,6 +6,7 @@
 	#define POS_LEGAJO_PROFE_ACT 2
 	#define POS_FECHA_DESDE_ACT 3
 	#define POS_FECHA_FIN_ACT 4
+	#include "../profesor/profesor.h"
 
 	//----------------------------------------------------
 	typedef struct {	    

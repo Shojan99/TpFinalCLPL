@@ -11,6 +11,7 @@
 	#define POS_OBS_SOC 7
 	#define POS_ACTIVO_SOC 8
 	#define POS_MOROSO_SOC 9
+	#include "../localidad/localidad.h"
 	//----------------------------------------------------
 	typedef struct {	    
 		IOBJECT	 // crea definicion de propiedades comunes a Object .. Macro en orm.h     

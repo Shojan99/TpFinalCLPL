@@ -14,10 +14,15 @@ THIS(obj_Cuotas)// crea definicion de funcion this para este modulo. .. Macro en
 //----------------------------------------------------
 static void toString_CuotasImpl(void *self)
 {
-     obj_Cuotas *obj=this(self);     
-     
-     // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
-     printf("\n"); 
+    obj_Cuotas *obj=this(self);     
+    printf("Codigo SocioActividad:%d\nEstado:%s\nImporte:%f\nAnio :%d Mes:%d\n",
+	obj->getCodActSocio(obj),
+	obj->getEstado(obj),
+    obj->getImporte(obj),
+    obj->getAnio(obj),
+    obj->getMes(obj));
+    // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
+    printf("\n"); 
 }
 //----------------------------------------------------
 //implementacion de getters
@@ -133,100 +138,76 @@ obj_Cuotas *Cuotas_new()
   return (obj_Cuotas *)init_obj(sizeof(obj_Cuotas), init_Cuotas);
 }
 //----------------------------------------------------
-void ingresarCuota() 
-{
+void ingresarCuota() {
     obj_Cuotas *cuota;
     cuota = Cuotas_new();
-    int codActSocio, cod_socio,anio,mes;
-    float importe;
-    char filtro[100];
-    char  fechaVencimiento[12], fechaPago[12], estado[2];
     
-    printf("Ingrese el codigo del socio\n");
-    scanf("%d",&cod_socio);
+    int codActSocio, cod_socio, anio, mes;
+    float importe = 0;
+    char filtro[100];
+    char fechaVencimiento[12], fechaPago[12], estado[2];
+    
+    printf("Ingrese el codigo del socio: ");
+    scanf("%d", &cod_socio);
     sprintf(filtro, "nro_socio=%d", cod_socio);
     
+    printf("Ingrese el anio de pago: ");
+    scanf("%d", &anio);
+    cuota->setAnio(cuota, anio);
+    
+    printf("Ingrese el mes: ");
+    scanf("%d", &mes);
+    cuota->setMes(cuota, mes);
+
+    printf("Ingrese el estado (formato: I = impago | P = Pago | A = Anulado): ");
+    fflush(stdin);
+    fgets(estado, 2, stdin);
+    cuota->setEstado(cuota, estado);
+    
+    printf("Ingrese la fecha de vencimiento (formato: AAAA/MM/DD): ");
+    fflush(stdin);
+    fgets(fechaVencimiento, 12, stdin);
+    cuota->setFechaVenc(cuota, fechaVencimiento);
+    
+    printf("Ingrese la fecha de pago (formato: AAAA/MM/DD): ");
+    fflush(stdin);
+    fgets(fechaPago, 12, stdin);
+    cuota->setFechaPago(cuota, fechaPago);
+    
     obj_ActividadSocio *actSoc;
-    actSoc = ActividadSocio_new(); 
-    obj_Actividad *act;
-    act = Actividad_new();
-    obj_ImporteActividad *impAct;
-    impAct = ImporteActividad_new();
-    
-    void *list;
-	int size = actSoc->findAll(actSoc, &list, filtro);    
-    int i, suma = 0;
-    for (i = 0; i < size; i++) {
-        obj_ActividadSocio *itmActSoc = ((obj_ActividadSocio **)list)[i];
-        int codigoAct = itmActSoc->getCodAct(itmActSoc);
-		      
-        sprintf(filtro, "cod_act=%d", codigoAct);       
-        void *ActividadList;
-        int actividadSize = act->findAll(act, &ActividadList, filtro);        
-        int j;
-        for (j = 0; j < actividadSize; j++) {
-            obj_Actividad *itm = ((obj_Actividad **)ActividadList)[j];
-            int codigoTipoAct = itm->getCodTipoAct(itm);
-            int k;
-            sprintf(filtro, "cod_tipo_act=%d", codigoTipoAct); 
-            void *ImporteActividadList;
-            ((Object *)itm)->toString(itm);
-            
-            int ImporteActividadSize = impAct->findAll(impAct, &list, filtro); 
-            for (k = 0; k < ImporteActividadSize; k++) {
-            	obj_ImporteActividad *itmImpAct = ((obj_ImporteActividad **)ImporteActividadList)[k];
-            	((Object *)itmImpAct)->toString(itmImpAct);
-            	importe += itmImpAct->getImporte(itmImpAct);
-            }
-            cuota->setImporte(cuota, importe);
-            destroyObjList(ImporteActividadList, ImporteActividadSize);
-        }
-        cuota->setCodActSocio(cuota,itmActSoc->getCodAct(itmActSoc));
-	    destroyObjList(ActividadList, actividadSize);
-        destroyObjList(list, size);
-	}	
-    
-    printf("Ingrese el anio de pago\n");
-    scanf("%d",&anio);
-    cuota->setAnio(cuota,anio);
-    
-    printf("ingrese el mes\n");
-    scanf("%d",&mes);
-    cuota->setMes(cuota,mes);
-
-    //fflush(stdin);
-    printf("ingrese el estado\n");
-    fflush(stdin);
-    fgets(estado,2,stdin);
-    cuota->setEstado(cuota,estado);
-    
-    printf("ingrese la fecha de vencimiento\n");
-    fflush(stdin);
-    fgets(fechaVencimiento,12,stdin);
-    cuota->setFechaVenc(cuota,fechaVencimiento);
-    
-    printf("ingrese la fecha de pago\n");
-    fflush(stdin);
-    fgets(fechaPago,12,stdin);
-    cuota->setFechaPago(cuota,fechaPago);
-    
-    //soc->setMoroso(soc,false);
-
-    if(!cuota->saveObj(cuota))
-    {
-        printf("Ocurrio un error al agregar la cuota:\n%s\n",getLastError());
-    }
-    destroyObj(cuota);
+	actSoc = ActividadSocio_new();
+	void *list;
+	int size = actSoc->findAll(actSoc, &list, filtro);
+	
+	int i, k, j;
+	for (i = 0; i < size; i++) {
+	    obj_ActividadSocio *itmActSoc = ((obj_ActividadSocio **)list)[i];
+	    int codigoAct = itmActSoc->getCodAct(itmActSoc);
+	    obj_Actividad *act;
+	    act = Actividad_new();
+	    int actSize = act->findbykey(act, codigoAct);
+	    if (actSize > 0) {
+	    	obj_ImporteActividad *impAct;
+	        impAct = ImporteActividad_new();
+			int codigoTipoAct = act->getCodTipoAct(act);
+	        int impActSize = impAct->findbykey(impAct, codigoTipoAct);
+	        if (impActSize > 0) {
+	            importe += impAct->getImporte(impAct);
+	        }
+	        cuota->setCodActSocio(cuota, itmActSoc->getCodAct(itmActSoc));
+	        destroyObj(act);
+	    }
+	}
+	cuota->setImporte(cuota, importe);
+	destroyObjList(list, size);
+	
+	if (!cuota->saveObj(cuota)) {
+	    printf("Ocurrió un error al agregar la cuota:\n%s\n", getLastError());
+	}
+	destroyObj(cuota);
 }
-
 void ListarCuotas() {
     printf("[ Listado de cuotas ]\n");
-    
-    obj_Cuotas *cuo;
-    cuo = Cuotas_new();    
-    
-    obj_ActividadSocio *actSoc;
-    actSoc = ActividadSocio_new();  
     
     char tipoEstado;
     printf("Ingrese el tipo de estado (I - Impagas, P - Pagas, A - Anuladas): ");
@@ -235,24 +216,27 @@ void ListarCuotas() {
     char fechaDesde[11];
     char fechaHasta[11];
     
-    printf("Ingrese la fecha de inicio (formato: DD/MM/AAAA): ");
+    printf("Ingrese la fecha de inicio (formato: AAAA-MM-DD): ");
     scanf(" %s", fechaDesde);
     
-    printf("Ingrese la fecha de fin (formato: DD/MM/AAAA): ");
+    printf("Ingrese la fecha de fin (formato: AAAA-MM-DD): ");
     scanf(" %s", fechaHasta);
     
     char filtro[100];
-    sprintf(filtro, "estado=%c AND fecha BETWEEN '%s' AND '%s'", tipoEstado, fechaDesde, fechaHasta);
-    
-    void *list;
-    int size = cuo->findAll(cuo, &list, filtro);
-    
+    sprintf(filtro, "estado='%c' AND fecha_venc BETWEEN '%s' AND '%s'",tipoEstado, fechaDesde, fechaHasta);
+ 	//		
     int i;
-    for (i = 0; i < size; i++) {
-        obj_Cuotas *itm = ((obj_Cuotas **)list)[i];
-        ((Object *)itm)->toString(itm);
+    void *list;
+    obj_Cuotas *cuo;    
+    obj_Cuotas *itm;
+    cuo = Cuotas_new();
+    int size = cuo->findAll(cuo,&list,filtro);
+    printf("[ Listado de Cuotas ]\n");
+    for(i=0;i<size;++i)
+    {
+    	itm = ((Object **)list)[i];
+    	((Object *)itm)->toString(itm);
     }
-    
-    destroyObjList(list, size);
+    destroyObjList(list,size);
     destroyObj(cuo);
 }

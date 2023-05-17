@@ -6,7 +6,7 @@
 	#define POS_ANIO_IMPACT 2
 	#define POS_MES_IMPACT 3
 	#define POS_IMPORTE_IMPACT 4
-
+	#include "../cuotas/cuotas.h"
 	//----------------------------------------------------
 	typedef struct {	    
 		IOBJECT	 // crea definicion de propiedades comunes a Object .. Macro en orm.h     
