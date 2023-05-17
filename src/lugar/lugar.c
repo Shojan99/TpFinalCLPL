@@ -52,6 +52,47 @@ void ingresarLugar(){
     destroyObj(lug);
 
 }
+void actualizarLugar(){
+	obj_Lugar *lug; 
+    lug = Lugar_new(); 
+    char nombreLugar[90];
+    int cod,i,confirma;
+    
+	printf("[ Actualizar Lugar ]\n Ingrese el codigo del lugar a modificar\n");
+	scanf("%d",&cod);
+	
+	if(lug->findbykey(lug, cod) != NOT_FOUND){ 
+		
+		do{
+		system("cls");	
+		printf("Ingrese lo que desea modificar\n1 - nombre \n");
+		scanf("%d",&i);
+		switch(i){
+			case 1:
+				
+				printf("Ingrese el nuevo nombre\n");
+				fflush(stdin);
+				fgets(nombreLugar,90,stdin);
+				lug->setNombre(lug,nombreLugar);
+				if(!lug->saveObj(lug))
+			  		{
+			  			printf("Ocurrio un error al actualizar el nombre:\n%s\n",getLastError());
+			  		}
+			  	printf("Se actualizo el nombre\n");
+			  	break;	
+			default:
+				printf("ingrese un valor valido\n");
+				break;
+		}
+		printf("Desea seguir ingresando?\n - Presione cualquier tecla para si y 0 para no\n");
+		scanf("%d",&confirma);
+		}while(confirma!=0);
+	}else{
+		system("cls");
+		printf("No se encontro el tipo de actividad\n");
+	}
+	destroyObj(lug);
+}
 //----------------------------------------------------
 //implementacion constructor
 //----------------------------------------------------

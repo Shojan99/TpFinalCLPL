@@ -85,7 +85,7 @@ void actualizarTipoActividad(){
     char nombreTAct[90];
     int cod,i,confirma;
     
-	printf("[ Actualizar profesor ]\n Ingrese el codigo del tipo de actividad a modificar\n");
+	printf("[ Actualizar tipo actividad ]\n Ingrese el codigo del tipo de actividad a modificar\n");
 	scanf("%d",&cod);
 	
 	if(tAct->findbykey(tAct, cod) != NOT_FOUND){ 
