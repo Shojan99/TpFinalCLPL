@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 THIS(obj_Socio)// crea definicion de funcion this para este modulo. .. Macro en config.h
-
+//int confirmaImpresion=0;
 //----------------------------------------------------
 static void toString_SocioImpl(void *self)
 {
@@ -13,6 +13,22 @@ static void toString_SocioImpl(void *self)
      obj_Localidad *loc = obj->getLocalidadObj(obj);
      // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
      printf("Nro.Socio: %d - Dni: %d - Apellido,Nombres:%s,%s - Activo:%d  - Localidad:%s\n",
+	 obj->getNroSocio(obj), 
+	 obj->getDni(obj),
+	 obj->getApellido(obj), 
+	 obj->getNombres(obj),
+	 obj->getActivo(obj),
+	 loc->getNombre(loc)
+	 ); // 1:true(en la base) - 0:false(en la base) -- activo / moroso
+}
+
+static void toFile_SocioImpl(void *self, FILE *fd)
+{
+     obj_Socio *obj=this(self);     
+     
+     obj_Localidad *loc = obj->getLocalidadObj(obj);
+     // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
+     fprintf(fd,"Nro.Socio: %d - Dni: %d - Apellido,Nombres:%s,%s - Activo:%d  - Localidad:%s\n",
 	 obj->getNroSocio(obj), 
 	 obj->getDni(obj),
 	 obj->getApellido(obj), 
@@ -268,46 +284,70 @@ int comparaAscendente(const void *a, const void * b)
     return strcmp(socio_b->getNombres(socio_b), socio_a->getNombres(socio_a));
 }
 	
-void listarSocios(char filtro[]){
+void listarSocios(char filtro[])
+{
 	int aux;
-	int i;
-
-	do{ 
-	 void *list;
-    obj_Socio *soc;
-    obj_Socio *itm;
-    soc = Socio_new();
-	printf("Como desea ordenarlos? Ascendente presione 1 y descendente precione 2\n");
-	scanf("%d",&aux);
-    printf("[ Listado de socios ]\n");
- 
-    int size = soc->findAll(soc,&list,filtro);
-    switch(aux){
-    	case 1:
-			qsort(list, size, sizeof(obj_Socio*), comparaAscendente);
-	    	for(i=0;i<size;++i)
-	    	{
-		    	itm = ((Object **)list)[i];
-		    	((Object *)itm)->toString(itm);
-	    	} 	
-		break;
-		case 2:	
-			qsort(list, size, sizeof(obj_Socio*), comparaDescendente);	
-			for(i=0;i<size;++i)
-	    	{
-		    	itm = ((Object **)list)[i];
-		    	((Object *)itm)->toString(itm);
-	    	} 
-    	break;
-    	default:
-    		system("cls");
-    		printf("Ingrese un valor valido\n");
+	int i, confirma;
+	void *list;
+	obj_Socio *soc;
+	obj_Socio *itm;
+	soc = Socio_new();
+	 int size = soc->findAll(soc,&list,filtro);
+	do{
+		printf("Como desea ordenarlos? Ascendente presione 1 y descendente precione 2\n");
+	    scanf("%d",&aux);
+		printf("[ Listado de socios ]\n");
+	   
+	    switch(aux){
+	    	case 1:
+				qsort(list, size, sizeof(obj_Socio*), comparaAscendente);
+		    	for(i=0;i<size;++i)
+		    	{
+			    	itm = ((Object **)list)[i];
+			    	((Object *)itm)->toString(itm);
+		    	} 	
+				break;
+			case 2:	
+				qsort(list, size, sizeof(obj_Socio*), comparaDescendente);	
+				for(i=0;i<size;++i)
+		    	{
+			   		itm = ((Object **)list)[i];
+			   		((Object *)itm)->toString(itm);
+		    	} 
+	    		break;
+	    	default:
+	    		system("cls");
+	    		printf("Ingrese un valor valido\n");
+		}
 	}
-  	destroyObjList(list,size);
-    destroyObj(soc);
-}while(aux!=2 && aux !=1);
-   
+	while(aux!=2 && aux !=1);
+	
+	//ARCHIVO
+	printf("Desea crear un archivo de salida? Ingrese 0 para no, o cualquier otro valor para si\n");
+	scanf("%d", &confirma);
+	if(confirma)
+	{                       
+	    FILE *archivo;
+		archivo = fopen("salida.txt", "w");
+		if(archivo==NULL) 
+		{
+		   	printf("No se pudo abrir el archivo.\n");
+		    return 1;
+		}	
+		
+		for(i=0;i<size;++i)
+		{
+			itm = ((Object **)list)[i];
+	    //	((Object *)itm)->toFile(itm, archivo);
+			//fprintf(archivo, "%s", ((Object *)itm)->toFile(itm));
+		} 
+		fclose(archivo);
+	}
+	
+	destroyObjList(list,size);
+	destroyObj(soc);
 }
+
 
 //----------------------------------------------------
 //implementacion constructor
@@ -322,6 +362,7 @@ static void *init_Socio(void *self)
   obj->localidad 	    = NULL;
   //incializacion de la interfaz de la entidad
   obj->toString    		= toString_SocioImpl;
+  //obj->toFile    		= toFile_SocioImpl;
   // Inicializar handlers de getters y setters
   /// getters
   obj->getNroSocio 		= getNroSocio_Impl;
