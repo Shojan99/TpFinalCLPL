@@ -142,14 +142,42 @@ void ingresarCuota() {
     obj_Cuotas *cuota;
     cuota = Cuotas_new();
     
-    int codActSocio, cod_socio, anio, mes;
+    int codActSocio, cod_socio, anio, mes, codAct, codImpAct;
     float importe = 0;
     char filtro[100];
     char fechaVencimiento[12], fechaPago[12], estado[2];
     
     printf("Ingrese el codigo del socio: ");
     scanf("%d", &cod_socio);
-    sprintf(filtro, "nro_socio=%d", cod_socio);
+    sprintf(filtro, "nro_socio=%d AND fecha_venc 'NULL'", cod_socio);
+    
+    obj_ActividadSocio *actSoc;
+	actSoc = ActividadSocio_new();
+	void *list;
+	int size = actSoc->findAll(actSoc, &list, filtro);
+    int i;
+    
+	obj_Actividad *act;
+	act = Actividad_new();
+    obj_TipoActividad *tAct;
+    printf("Actividades que posee este socio: ");
+    for (i = 0; i < size; i++) {
+	    obj_ActividadSocio *itmActSoc = ((obj_ActividadSocio **)list)[i];
+	    int codigoAct = itmActSoc->getCodAct(itmActSoc);
+	    int actSize = act->findbykey(act, codigoAct);
+	    tAct = act->getTipoActividadObj(act);
+	    printf("Nombre: %s - Codigo Actividad: %d - CodigoActividadSocio: %d\n", tAct->getNombre(tAct), tAct->getCodigo(tAct), actSoc->getCodAct(actSoc));
+	}
+	
+    printf("\nIngrese el codigo de actividadSocio del cual desea crear la cuota\n");
+    scanf("%d", &codAct);
+    tAct = act->getTipoActividadObj(act); //me guardo el tipo actividad que desea el usuario
+    cuota->setCodActSocio(cuota, codAct);
+    
+    printf("Ingrese la fecha de vencimiento (formato: AAAA-MM-DD):\n");
+    fflush(stdin);
+    fgets(fechaVencimiento, 12, stdin);
+    cuota->setFechaVenc(cuota, fechaVencimiento);
     
     printf("Ingrese el anio de pago: ");
     scanf("%d", &anio);
@@ -158,47 +186,30 @@ void ingresarCuota() {
     printf("Ingrese el mes: ");
     scanf("%d", &mes);
     cuota->setMes(cuota, mes);
-
-    printf("Ingrese el estado (formato: I = impago | P = Pago | A = Anulado): ");
+	
+	void *listImpAct;	
+	Obj_ImporteActividad *impAct;
+	sprintf(filtro, "cod_tipo_act=%d AND anio<=%d AND mes<=%d", tAct->getCodigo(tAct), cuota->getAnio(cuota), cuota->getMes(cuota));
+	int impActSize = impAct->findAll(impAct, &listImpAct, filtro);
+	for (i = 0; i < impActSize; i++) {
+	    obj_ImporteActividad *itmImpAct = ((obj_ImporteActividad **)list)[i];
+	    printf("Codigo: %d - Importe: %f\n", itmImpAct->getCodigo(itmImpAct), itmImpAct->getImporte(itmImpAct));
+	}	
+	
+	printf("\nIngrese el codigo de ImporteActividad del cual desea crear la cuota\n");
+    scanf("%d", &codImpAct);
+    cuota->setImporte(cuota, itmImpAct->getImporte(codImpAct));
+	
+    printf("Ingrese el estado (formato: I = impago | P = Pago):\n");
     fflush(stdin);
     fgets(estado, 2, stdin);
     cuota->setEstado(cuota, estado);
     
-    printf("Ingrese la fecha de vencimiento (formato: AAAA/MM/DD): ");
-    fflush(stdin);
-    fgets(fechaVencimiento, 12, stdin);
-    cuota->setFechaVenc(cuota, fechaVencimiento);
-    
-    printf("Ingrese la fecha de pago (formato: AAAA/MM/DD): ");
+    printf("Ingrese la fecha de pago (formato: AAAA-MM-DD):\n");
     fflush(stdin);
     fgets(fechaPago, 12, stdin);
     cuota->setFechaPago(cuota, fechaPago);
     
-    obj_ActividadSocio *actSoc;
-	actSoc = ActividadSocio_new();
-	void *list;
-	int size = actSoc->findAll(actSoc, &list, filtro);
-	
-	int i, k, j;
-	for (i = 0; i < size; i++) {
-	    obj_ActividadSocio *itmActSoc = ((obj_ActividadSocio **)list)[i];
-	    int codigoAct = itmActSoc->getCodAct(itmActSoc);
-	    obj_Actividad *act;
-	    act = Actividad_new();
-	    int actSize = act->findbykey(act, codigoAct);
-	    if (actSize > 0) {
-	    	obj_ImporteActividad *impAct;
-	        impAct = ImporteActividad_new();
-			int codigoTipoAct = act->getCodTipoAct(act);
-	        int impActSize = impAct->findbykey(impAct, codigoTipoAct);
-	        if (impActSize > 0) {
-	            importe += impAct->getImporte(impAct);
-	        }
-	        cuota->setCodActSocio(cuota, itmActSoc->getCodAct(itmActSoc));
-	        destroyObj(act);
-	    }
-	}
-	cuota->setImporte(cuota, importe);
 	destroyObjList(list, size);
 	
 	if (!cuota->saveObj(cuota)) {
@@ -206,6 +217,7 @@ void ingresarCuota() {
 	}
 	destroyObj(cuota);
 }
+
 void ListarCuotas() {
     printf("[ Listado de cuotas ]\n");
     
