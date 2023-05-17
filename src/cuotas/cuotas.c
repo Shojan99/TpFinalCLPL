@@ -5,6 +5,7 @@
 #include "../localidad/localidad.h"
 #include "../socio/socio.h"
 #include "../actividad_socio/actividad_socio.h"
+#include "../importe_actividad/importe_actividad.h"
 #include "cuotas.h"
 
 THIS(obj_Cuotas)// crea definicion de funcion this para este modulo. .. Macro en config.h
@@ -86,6 +87,12 @@ obj_ActividadSocio *getActividadSocio_CuotasObj_Impl(void *self)
 	//acceso a la informacion relacionada
 	return NULL;
 }
+
+obj_ImporteActividad *getImporteActividad_CuotasObj_Impl(void *self)
+{
+	obj_Cuotas *obj = this(self);
+	return NULL;
+}
 //----------------------------------------------------
 //implementacion constructor
 //----------------------------------------------------
@@ -97,6 +104,7 @@ static void *init_Cuotas(void *self)
   obj->sizeObj 		    = sizeof(obj_Cuotas*);
   // inicializar cada puntero a una referencia relacionada, para ver cuando se busca por el id..
   obj->actividad_socio  = NULL;
+  obj->importe_actividad  = NULL;
   //incializacion de la interfaz de la entidad
   obj->toString    		= toString_CuotasImpl;
   // Inicializar handlers de getters y setters
@@ -122,6 +130,8 @@ static void *init_Cuotas(void *self)
   obj->destroyInternal 	= destroyInternalAct_Impl;
   //---- acceso a relaciones  
   obj->getActividadSocioObj 	= getActividadSocio_CuotasObj_Impl;  
+  obj->getImporteActividadObj 	= getImporteActividad_CuotasObj_Impl;
+  
   return obj;
 }
 //----------------------------------------------------
@@ -134,13 +144,15 @@ obj_Cuotas *Cuotas_new()
 void ingresarCuota() 
 {
     obj_Cuotas *cuota;
+    obj_ActividadSocio 
+    
+    
     cuota = Cuotas_new();
     int codActSocio,anio,mes;
     double importe;
     char  fechaVencimiento[12], fechaPago[12], estado[1];
     
     printf("Ingrese el codigo de actividad socio\n");
-   
     scanf("%d",&codActSocio);
     cuota->setCodActSocio(cuota,codActSocio);
     
@@ -152,12 +164,14 @@ void ingresarCuota()
     scanf("%d",&mes);
     cuota->setMes(cuota,mes);
     
+    int size = loc->findAll(loc,&list,"");
+    /*
     printf("ingrese el importe\n");
     scanf("%d",&importe);
     cuota->setImporte(cuota,importe);
-
+*/
     //fflush(stdin);
-    printf("ingrese el estado\n");
+    printf("Ingrese el estado de la cuota (P = Paga | I = Impaga | A = Anulada)\n");
     fflush(stdin);
     fgets(estado,1,stdin);
     cuota->setEstado(cuota,estado);
@@ -167,11 +181,13 @@ void ingresarCuota()
     fgets(fechaVencimiento,12,stdin);
     cuota->setFechaVenc(cuota,estado);
     
-    printf("ingrese la fecha de pago\n");
-    fflush(stdin);
-    fgets(fechaPago,12,stdin);
-    cuota->setFechaPago(cuota,estado);
-    
+    if(cuota->getEstado(estado) == 'P'){
+	
+	    printf("ingrese la fecha de pago\n");
+	    fflush(stdin);
+	    fgets(fechaPago,12,stdin);
+	    cuota->setFechaPago(cuota,estado);
+    }
     //soc->setMoroso(soc,false);
 
     if(!cuota->saveObj(cuota))

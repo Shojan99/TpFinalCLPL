@@ -33,6 +33,9 @@
 		setPropertyCharPtr  setFechaPago;
 		
 	    // getter de objeto relacionado
+	    getImporteActividadObjPtr getImporteActividadObj;
+	    obj_ImporteActividad *importe_actividad;
+	    
 		getActividadSocioObjPtr  getActividadSocioObj;
 	    obj_ActividadSocio *actividad_socio;
 	}obj_Cuotas;
