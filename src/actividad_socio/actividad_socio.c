@@ -84,37 +84,53 @@ obj_Socio *getSocio_ActividadSocioObj_Impl(void *self)
 //----------------------------------------------------
 //implementacion ingresos
 //----------------------------------------------------
-void ingresarActividadSocio() //consultar el static void!!!
+void ingresarActividadSocio()
 {
+    obj_Actividad *act;
+    act = Actividad_new();
     obj_ActividadSocio *actSoc;
     actSoc = ActividadSocio_new();
     int nro_soc, cod_act;
-    char fechaInicio[12], fechaFin[12];
+    char fechaInicio[12];
     
-    printf("ingrese el numero de socio\n");
-    scanf("%d",&nro_soc);
-    actSoc->setNroSocio(actSoc,nro_soc);
+    printf("Ingrese el numero de socio\n");
+    scanf("%d", &nro_soc);
+    actSoc->setNroSocio(actSoc, nro_soc);
     
-    printf("ingrese el numero de actividad\n");
-    scanf("%d",&cod_act);
-    actSoc->setCodAct(actSoc,cod_act);
+    printf("Ingrese el numero de actividad\n");
+    scanf("%d", &cod_act);
     
-    printf("ingrese la fecha de inicio\n");
-    fflush(stdin);
-    fgets(fechaInicio,12,stdin);
-    actSoc->setFechaInicio(actSoc,fechaInicio);
-
-    printf("ingrese la fecha de fin\n");
-    fflush(stdin);
-    fgets(fechaFin,12,stdin);
-    actSoc->setFechaFin(actSoc,fechaFin);
-
-    if(!actSoc->saveObj(actSoc))
-    {
-        printf("Ocurrio un error al agregar la actividad de un socio:\n%s\n",getLastError());
+    actSoc->setCodAct(actSoc, cod_act);
+    int actSize = act->findbykey(act, cod_act);
+    if (actSize == 0) {
+        printf("No se encontro la actividad correspondiente al codigo %d\n", cod_act);
+        destroyObj(act);
+        destroyObj(actSoc);
+        return;
     }
+    
+    char *fechaFin = act->getFechaFin(act);
+    
+    if (fechaFin != NULL && strcmp(fechaFin, "") != 0) {
+        printf("La actividad %d finalizo\n", cod_act);
+        destroyObj(act);
+        destroyObj(actSoc);
+        return;
+    }
+    
+    printf("Ingrese la fecha de inicio (formato AAAA-MM-DD)\n");
+    scanf("%11s", fechaInicio);
+    actSoc->setFechaInicio(actSoc, fechaInicio);
+  
+    actSoc->setFechaFin(actSoc, "NULL");
+
+    if (!actSoc->saveObj(actSoc)) {
+        printf("Ocurrio un error al agregar la actividad de un socio\n%s\n", getLastError());
+    }
+    
     destroyObj(actSoc);
 }
+
 
 //----------------------------------------------------
 //implementacion listados
