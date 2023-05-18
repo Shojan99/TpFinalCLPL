@@ -138,14 +138,33 @@ obj_Cuotas *Cuotas_new()
   return (obj_Cuotas *)init_obj(sizeof(obj_Cuotas), init_Cuotas);
 }
 //----------------------------------------------------
+
+// Función de comparación para ordenar importes de actividad de mayor a menor
+int compararImportes(const void *a, const void *b) {
+    obj_ImporteActividad *impA = *(obj_ImporteActividad **)a;
+    obj_ImporteActividad *impB = *(obj_ImporteActividad **)b;
+    
+    int anioA = impA->getAnio(impA);
+    int anioB = impB->getAnio(impB);
+    
+    if (anioA != anioB) {
+        return anioB - anioA;
+    }
+    
+    int mesA = impA->getMes(impA);
+    int mesB = impB->getMes(impB);
+    
+    return mesB - mesA;
+}
+
 void ingresarCuota() {
     obj_Cuotas *cuota;
     cuota = Cuotas_new();
     
-    int codActSocio, cod_socio, anio, mes;
+    int cod_socio, anio, mes, i;
     float importe = 0;
     char filtro[100];
-    char fechaVencimiento[12], fechaPago[12], estado[2];
+    char fechaVencimiento[12], estado[2];
     
     printf("Ingrese el codigo del socio: ");
     scanf("%d", &cod_socio);
@@ -158,54 +177,117 @@ void ingresarCuota() {
     printf("Ingrese el mes: ");
     scanf("%d", &mes);
     cuota->setMes(cuota, mes);
-
-    printf("Ingrese el estado (formato: I = impago | P = Pago | A = Anulado): ");
-    fflush(stdin);
-    fgets(estado, 2, stdin);
-    cuota->setEstado(cuota, estado);
-    
-    printf("Ingrese la fecha de vencimiento (formato: AAAA/MM/DD): ");
-    fflush(stdin);
-    fgets(fechaVencimiento, 12, stdin);
-    cuota->setFechaVenc(cuota, fechaVencimiento);
-    
-    printf("Ingrese la fecha de pago (formato: AAAA/MM/DD): ");
-    fflush(stdin);
-    fgets(fechaPago, 12, stdin);
-    cuota->setFechaPago(cuota, fechaPago);
     
     obj_ActividadSocio *actSoc;
-	actSoc = ActividadSocio_new();
-	void *list;
-	int size = actSoc->findAll(actSoc, &list, filtro);
-	
-	int i, k, j;
-	for (i = 0; i < size; i++) {
-	    obj_ActividadSocio *itmActSoc = ((obj_ActividadSocio **)list)[i];
-	    int codigoAct = itmActSoc->getCodAct(itmActSoc);
-	    obj_Actividad *act;
-	    act = Actividad_new();
-	    int actSize = act->findbykey(act, codigoAct);
-	    if (actSize > 0) {
-	    	obj_ImporteActividad *impAct;
-	        impAct = ImporteActividad_new();
-			int codigoTipoAct = act->getCodTipoAct(act);
-	        int impActSize = impAct->findbykey(impAct, codigoTipoAct);
-	        if (impActSize > 0) {
-	            importe += impAct->getImporte(impAct);
-	        }
-	        cuota->setCodActSocio(cuota, itmActSoc->getCodAct(itmActSoc));
-	        destroyObj(act);
-	    }
-	}
-	cuota->setImporte(cuota, importe);
-	destroyObjList(list, size);
-	
-	if (!cuota->saveObj(cuota)) {
-	    printf("Ocurrió un error al agregar la cuota:\n%s\n", getLastError());
-	}
-	destroyObj(cuota);
+    actSoc = ActividadSocio_new();
+    void *list;
+    int size = actSoc->findAll(actSoc, &list, filtro);
+    
+    if (size == 0) {
+        printf("El socio no tiene actividades asociadas.\n");
+        destroyObj(actSoc);
+        destroyObj(cuota);
+        return;
+    }
+    
+    printf("Actividades del socio:\n");
+    for (i = 0; i < size; i++) {
+        obj_ActividadSocio *itmActSoc = ((obj_ActividadSocio **)list)[i];
+        int codigoAct = itmActSoc->getCodAct(itmActSoc);
+        
+        obj_Actividad *act;
+        act = Actividad_new();
+        int actSize = act->findbykey(act, codigoAct);
+        
+        if (actSize == 0) {
+            printf("No se encontro la actividad correspondiente al codigo %d.\n", codigoAct);
+            destroyObj(act);
+            destroyObj(actSoc);
+            destroyObj(cuota);
+            return;
+        }
+        
+        char *fechaFin = act->getFechaFin(act);
+        
+        if (fechaFin == NULL) {
+            printf("La actividad con codigo %d ya finalizo.\n", codigoAct);
+            destroyObj(act);
+            destroyObj(actSoc);
+            destroyObj(cuota);
+            return;
+        }
+        
+        printf("%d. Codigo de actividad: %d\n", i+1, codigoAct);
+        destroyObj(act);
+    }
+    
+    int opcion;
+    printf("Seleccione una actividad para crear la cuota (ingrese el numero): ");
+    scanf("%d", &opcion);
+    
+    if (opcion < 1 || opcion > size) {
+        printf("Opcion invalida.\n");
+        destroyObj(actSoc);
+        destroyObj(cuota);
+        return;
+    }
+    
+    obj_ActividadSocio *itmActSoc = ((obj_ActividadSocio **)list)[opcion - 1];
+    int codigoAct = itmActSoc->getCodAct(itmActSoc);
+    destroyObj(actSoc);
+    
+    obj_Actividad *act;
+    act = Actividad_new();
+    int actSize = act->findbykey(act, codigoAct);
+    
+    if (actSize == 0) {
+        printf("No se encontro la actividad correspondiente al codigo %d.\n", codigoAct);
+        destroyObj(act);
+        destroyObj(cuota);
+        return;
+    }
+    
+    char *fechaFin = act->getFechaFin(act);
+    
+    if (fechaFin == NULL) {
+        printf("La actividad con codigo %d no esta activa.\n", codigoAct);
+        destroyObj(act);
+        destroyObj(cuota);
+        return;
+    }
+    
+    int codigoTipoAct = act->getCodTipoAct(act);
+    destroyObj(act);
+    
+    obj_ImporteActividad *impAct;
+    impAct = ImporteActividad_new();
+    int impActSize = impAct->findbykey(impAct, codigoTipoAct);
+    
+    if (impActSize == 0) {
+        printf("No se encontro el importe para el tipo de actividad con codigo %d.\n", codigoTipoAct);
+        destroyObj(impAct);
+        destroyObj(cuota);
+        return;
+    }
+    
+    importe = impAct->getImporte(impAct);
+    destroyObj(impAct);
+
+    printf("Ingrese la fecha de vencimiento (formato: AAAA-MM-DD): ");
+    scanf("%s", fechaVencimiento);
+    cuota->setFechaVenc(cuota, fechaVencimiento);
+    cuota->setCodActSocio(cuota, codigoAct);
+    cuota->setImporte(cuota, importe);
+    cuota->setEstado(cuota, "I");
+    cuota->setFechaPago(cuota, "NULL"); // Sin fecha de pago
+    
+    if (!cuota->saveObj(cuota)) {
+        printf("Ocurrio un error al agregar la cuota:\n%s\n", getLastError());
+    }
+    destroyObj(cuota);
 }
+
+
 void ListarCuotas() {
     printf("[ Listado de cuotas ]\n");
     
@@ -224,7 +306,7 @@ void ListarCuotas() {
     
     char filtro[100];
     sprintf(filtro, "estado='%c' AND fecha_venc BETWEEN '%s' AND '%s'",tipoEstado, fechaDesde, fechaHasta);
- 	//		
+		
     int i;
     void *list;
     obj_Cuotas *cuo;    

@@ -83,7 +83,7 @@ int menuActualizar()
 			actualizarLocalidad();
 			break;
 		case 5:
-		//	actualizarHorario();
+			//actualizarHorario();
 			break;
 		case 6:
 			actualizarLugar();
@@ -96,7 +96,6 @@ int menuActualizar()
 			break;
 		case 9:
 			actualizarImporteActividad();
-			break;
 	}
 	return 1;
 }
