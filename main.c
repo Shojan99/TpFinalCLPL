@@ -10,27 +10,29 @@
 
 #include "includes/includes.h"
 
-int menu(char *msg, int tope){
-
+int menu(char *msg, int tope)
+{
+    char opcionStr[10]; // Cadena para almacenar la opción ingresada
     int opcion = 0;
-    int leidos = 0;
 
-    do {
+    do
+    {
         printf("//-----------------------------------------------------------------------\\ \n");
         printf("%s", msg);
-        leidos = scanf("%d", &opcion);
+        scanf("%s", opcionStr);
+        opcion = atoi(opcionStr); // Convertir la cadena a un entero
 
-        while (getchar() != '\n'); // Limpiar el búfer de entrada
+        system("cls");
 
-        if (leidos != 1 || opcion < 0 || opcion > tope) {
-        	system("cls");
+        if (opcion < 0 || opcion > tope)
+        {
             printf("Opcion invalida. Por favor, ingrese una opcion valida\n");
         }
-    } while (leidos != 1 || opcion < 0 || opcion > tope);
-
+    } while (opcion < 0 || opcion > tope);
     return opcion;
 }
 
+// Resto del código omitido por brevedad
 
 int menuIngreso()
 {
