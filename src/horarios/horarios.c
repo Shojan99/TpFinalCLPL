@@ -170,6 +170,18 @@ void ingresarHorario(){
 //implementacion listados
 //----------------------------------------------------
 // Función para listar los horarios de un profesor en la semana
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#include "horarios.h"  // Incluir el archivo de encabezado correspondiente a los horarios
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#include "horarios.h"  // Incluir el archivo de encabezado correspondiente a los horarios
+
 void listarHorariosSemana() {
     printf("[ Listado de horarios de la semana ]\n");
     
@@ -183,6 +195,37 @@ void listarHorariosSemana() {
     for (i = 0; i < size; i++) {
         obj_Horario *itm = ((obj_Horario **)list)[i];
         ((Object *)itm)->toString(itm);
+    }
+
+    char respuesta;
+    printf("¿Desea guardar los horarios en un archivo de texto? (s/n): ");
+    scanf(" %c", &respuesta);
+    
+    if (respuesta == 's' || respuesta == 'S') {
+        FILE *archivo = fopen("horarios_semana.txt", "w");
+        if (archivo == NULL) {
+            printf("Error al crear el archivo.\n");
+            return;
+        }
+        
+        for (i = 0; i < size; i++) {
+            obj_Horario *itm = ((obj_Horario **)list)[i];
+            char horaAcotada[MAXIMA_LONGITUD_CADENA] = "";
+     		char horaAcotada2[MAXIMA_LONGITUD_CADENA] = "";
+   			 // Extraer
+    		strncpy(horaAcotada, itm->getHoraDesde(itm), CANTIDADCARACTERES);
+    		strncpy(horaAcotada2, itm->getHoraHasta(itm), CANTIDADCARACTERES);
+            fprintf(archivo, "ID de la Clase: %d\n", itm->getCodigo(itm));
+            fprintf(archivo, "Día: %d\n", itm->getDia(itm));
+            fprintf(archivo, "Código de Actividad: %d\n", itm->getCodAct(itm));
+            fprintf(archivo, "Hora Desde: %s\n", horaAcotada);
+            fprintf(archivo, "Hora Hasta: %s\n", horaAcotada2);
+            fprintf(archivo, "Código de Lugar: %d\n", itm->getCodLugar(itm));
+            fprintf(archivo, "\n");
+        }
+        
+        fclose(archivo);
+        printf("Los horarios se han guardado correctamente en el archivo horarios_semana.txt.\n");
     }
     
     destroyObjList(list, size);
