@@ -217,7 +217,7 @@ void actualizarSocio(){
 		
 		do{
 		//system("cls");	
-		printf("Ingrese lo que desea modificar.\n1 - dni\n2 - nombre\n3 - apellido\n4 - domicilio\n5 - telefono\n");
+		printf("Ingrese lo que desea modificar.\n1 - dni\n2 - nombre\n3 - apellido\n4 - domicilio\n5 - telefono\n6 - dar de baja\n");
 		scanf("%d",&i);
 		switch(i){
 			case 1:
@@ -293,6 +293,14 @@ void actualizarSocio(){
 				  	printf("Ocurrio un error al actualizar el telefono:\n%s\n",getLastError());
 				  	}
 				printf("Se actualizo el telefono.\n");
+			case 6:
+				  soc->setActivo(soc, false);
+				  if (!soc->saveObj(soc)) {
+				    printf("Ocurrió un error al dar de baja al socio:\n%s\n", getLastError());
+				  } else {
+				    printf("Se dio de baja al socio.\n");
+				  }
+				  break;
 			default:
 				printf("ingrese un valor valido.\n");
 				break;
@@ -320,70 +328,70 @@ int comparaAscendente(const void *a, const void * b)
     return strcmp(socio_b->getNombres(socio_b), socio_a->getNombres(socio_a));
 }
 	
-void listarSocios(char filtro[])
-{
-	int aux;
-	int i, confirma;
-	void *list;
-	obj_Socio *soc;
-	obj_Socio *itm;
-	soc = Socio_new();
-	 int size = soc->findAll(soc,&list,filtro);
-	do{
-		printf("Como desea ordenarlos? Ascendente presione 1 y descendente precione 2.\n");
-	    scanf("%d",&aux);
-		printf("[ Listado de socios ]\n");
-	   
-	    switch(aux){
-	    	case 1:
-				qsort(list, size, sizeof(obj_Socio*), comparaAscendente);
-		    	for(i=0;i<size;++i)
-		    	{
-			    	itm = ((Object **)list)[i];
-			    	((Object *)itm)->toString(itm);
-		    	} 	
-				break;
-			case 2:	
-				qsort(list, size, sizeof(obj_Socio*), comparaDescendente);	
-				for(i=0;i<size;++i)
-		    	{
-			   		itm = ((Object **)list)[i];
-			   		((Object *)itm)->toString(itm);
-		    	} 
-	    		break;
-	    	default:
-	    		system("cls");
-	    		printf("Ingrese un valor valido.\n");
-		}
-	}
-	while(aux!=2 && aux !=1);
-	
-	//ARCHIVO
-	printf("Desea crear un archivo de salida? Ingrese 0 para no, o cualquier otro valor para si.\n");
-	scanf("%d", &confirma);
-	if(confirma)
-	{                       
-	    FILE *archivo;
-		archivo = fopen("salida.txt", "w");
-		if(archivo==NULL) 
-		{
-		   	printf("No se pudo abrir el archivo.\n");
-		    return 1;
-		}	
-		
-		for(i=0;i<size;++i)
-		{
-			itm = ((Object **)list)[i];
-	    //	((Object *)itm)->toFile(itm, archivo);
-			//fprintf(archivo, "%s", ((Object *)itm)->toFile(itm));
-		} 
-		fclose(archivo);
-	}
-	
-	destroyObjList(list,size);
-	destroyObj(soc);
-}
+void listarSocios(char filtro[]) {
+    int aux;
+    int i, confirma;
+    void *list;
+    obj_Socio *soc;
+    obj_Socio *itm;
+    soc = Socio_new();
+    int size = soc->findAll(soc, &list, filtro);
 
+    do {
+        printf("Como desea ordenarlos? Ascendente: presione 1, Descendente: presione 2\n");
+        scanf("%d", &aux);
+        printf("[Listado de socios]\n");
+
+        switch (aux) {
+            case 1:
+                qsort(list, size, sizeof(obj_Socio*), comparaAscendente);
+                for (i = 0; i < size; ++i) {
+                    itm = ((obj_Socio **)list)[i];
+                    soc->toString(itm);
+                }
+                break;
+            case 2:
+                qsort(list, size, sizeof(obj_Socio*), comparaDescendente);
+                for (i = 0; i < size; ++i) {
+                    itm = ((obj_Socio **)list)[i];
+                    soc->toString(itm);
+                }
+                break;
+            default:
+                system("cls");
+                printf("Ingrese un valor valido\n");
+        }
+    } while (aux != 2 && aux != 1);
+
+    // ARCHIVO
+    printf("Desea crear un archivo de salida? Ingrese 0 para no, o cualquier otro valor para si\n");
+    scanf("%d", &confirma);
+    if (confirma) {
+        FILE *archivo;
+        archivo = fopen("salida.txt", "w");
+        if (archivo == NULL) {
+            printf("No se pudo abrir el archivo.\n");
+            destroyObjList(list, size); // Liberar la memoria antes de salir
+            destroyObj(soc);
+            return;
+        }
+
+        for (i = 0; i < size; ++i) {
+            itm = ((obj_Socio **)list)[i];
+            fprintf(archivo, "Nro.Socio: %d - Dni: %d - Apellido,Nombres:%s,%s - Activo:%d\n",
+                    itm->getNroSocio(itm),
+                    itm->getDni(itm),
+                    itm->getApellido(itm),
+                    itm->getNombres(itm),
+                    itm->getActivo(itm));
+        }
+        fclose(archivo);
+        printf("Archivo de salida creado exitosamente.\n");
+    }
+
+    destroyObjList(list, size);
+    destroyObj(soc);
+}
 
 //----------------------------------------------------
 //implementacion constructor
