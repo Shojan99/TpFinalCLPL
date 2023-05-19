@@ -141,39 +141,59 @@ void ingresarSocio() //consultar el static void!!!
 
     soc->setActivo(soc,true);
     
-    printf("Ingrese el apellido\n");
+    printf("Ingrese el apellido.\n");
     fflush(stdin);
     fgets(apellido, 90, stdin);
+    	if(apellido[0]=='\n'){
+			printf("No se ingreso un apellido.\n");
+		return;
+		}
     soc->setApellido(soc,apellido);
     
-    printf("Ingrese el nombre\n");
+    printf("Ingrese el nombre.\n");
     fflush(stdin);
     fgets(nombre, 90, stdin);
+    	if(nombre[0]=='\n'){
+			printf("No se ingreso un nombre.\n");
+		return;
+		}
     soc->setNombres(soc,nombre);
     
-    printf("ingrese el domicilio\n");
+    printf("ingrese el domicilio.\n");
     fflush(stdin);
     fgets(domicilio, 120, stdin);
+    	if(domicilio[0]=='\n'){
+			printf("No se ingreso un domicilio.\n");
+		return;
+		}
     soc->setDomicilio(soc,domicilio);
     
-     printf("ingrese el dni\n");
+     printf("ingrese el dni.\n");
     scanf("%d",&dni);
     soc->setDni(soc,dni);
     
     //fflush(stdin);
-    printf("ingrese una observacion\n");
+    printf("ingrese una observacion.\n");
     fflush(stdin);
     fgets(observaciones,250,stdin);
+    	if(nombre[0]=='\n'){
+			printf("No se ingreso una observacion.\n");
+		return;
+				}
     soc->setObservaciones(soc,observaciones);
 
-    printf("ingrese codigo postal\n");
+    printf("ingrese codigo postal.\n");
     scanf("%d",&cod_postal);
     soc->setCodPostal(soc,cod_postal);
 
     //fflush(stdin);
-    printf("ingrese un telefono\n");
+    printf("ingrese un telefono.\n");
     fflush(stdin);
     fgets(telefono,20,stdin);
+    	if(nombre[0]=='\n'){
+			printf("No se ingreso un telefono.\n");
+		return;
+				}
     soc->setTelefono(soc,telefono);
     
     soc->setMoroso(soc,false);
@@ -190,82 +210,98 @@ void actualizarSocio(){
 	char nombre[80], apellido[90], domicilio[120], telefono[20];
 	obj_Socio *soc; 
 	soc = Socio_new(); 
-	printf("[ Actualizar socio ]\n Ingrese el numero del socio a modificar\n");
+	printf("[ Actualizar socio ]\n Ingrese el numero del socio a modificar.\n");
 	scanf("%d",&nro_socio);
 	
 	if(soc->findbykey(soc, nro_socio) != NOT_FOUND){ 
 		
 		do{
 		//system("cls");	
-		printf("Ingrese lo que desea modificar\n1 - dni\n2 - nombre\n3 - apellido\n4 - domicilio\n5 - telefono\n");
+		printf("Ingrese lo que desea modificar.\n1 - dni\n2 - nombre\n3 - apellido\n4 - domicilio\n5 - telefono\n");
 		scanf("%d",&i);
 		switch(i){
 			case 1:
-				printf("Ingrese el nuevo dni\n");
+				printf("Ingrese el nuevo dni.\n");
 				scanf("%d",&dni);
 				soc->setDni(soc,dni);
 				if(!soc->saveObj(soc))
 			  		{
 			  			printf("Ocurrio un error al actualizar el dni:\n%s\n",getLastError());
 			  		}
-			  	printf("Se actualizo el dni\n");
+			  	printf("Se actualizo el dni.\n");
 			  	break;
 				  	
 			case 2:				
-				printf("Ingrese el nuevo nombre\n");
+				printf("Ingrese el nuevo nombre.\n");
 				fflush(stdin);
 				fgets(nombre,80,stdin);
+					if(nombre[0]=='\n'){
+						printf("No se ingreso un nombre.\n");
+					break;
+				}
 				soc->setNombres(soc,nombre);
 				if(!soc->saveObj(soc))
 			  		{
 			  			printf("Ocurrio un error al actualizar el nombre:\n%s\n",getLastError());
 			  		}
-			  	printf("Se actualizo el nombre\n");
+			  	printf("Se actualizo el nombre.\n");
 			  	break;	
 			  		
 			case 3:
-				printf("Ingrese el nuevo apellido\n");
+				printf("Ingrese el nuevo apellido.\n");
 				fflush(stdin);
 				fgets(apellido,90,stdin);
+					if(apellido[0]=='\n'){
+						printf("No se ingreso un apellido.\n");
+					break;
+				}
 				soc->setApellido(soc,apellido);
 				if(!soc->saveObj(soc))
 				  	{
 				  	printf("Ocurrio un error al actualizar el apellido:\n%s\n",getLastError());
 				  	}
-				printf("Se actualizo el apellido\n");
+				printf("Se actualizo el apellido.\n");
 				break;
 				
 			case 4:
-				printf("Ingrese el nuevo domicilio\n");
+				printf("Ingrese el nuevo domicilio.\n");
 				fflush(stdin);
 				fgets(domicilio,120,stdin);
+					if(domicilio[0]=='\n'){
+						printf("No se ingreso un domicilio.\n");
+					break;
+				}
 				soc->setDomicilio(soc,domicilio);
 				if(!soc->saveObj(soc))
 				  	{
 				  	printf("Ocurrio un error al actualizar el domicilio:\n%s\n",getLastError());
 				  	}
-				printf("Se actualizo el domicilio\n");
+				printf("Se actualizo el domicilio.\n");
 				break;
 			
 			case 5:
-				printf("Ingrese el nuevo telefono\n");
+				printf("Ingrese el nuevo telefono.\n");
 				fflush(stdin);
 				fgets(telefono,20,stdin);
+					if(telefono[0]=='\n'){
+						printf("No se ingreso un telefono.\n");
+					break;
+				}
 				soc->setTelefono(soc,telefono);
 				if(!soc->saveObj(soc))
 				  	{
 				  	printf("Ocurrio un error al actualizar el telefono:\n%s\n",getLastError());
 				  	}
-				printf("Se actualizo el telefono\n");
+				printf("Se actualizo el telefono.\n");
 			default:
-				printf("ingrese un valor valido\n");
+				printf("ingrese un valor valido.\n");
 				break;
 		}
-		printf("Desea seguir ingresando?\n - Presione cualquier tecla para si y 0 para no\n");
+		printf("Desea seguir ingresando?\n - Presione cualquier tecla para si y 0 para no.\n");
 		scanf("%d",&confirma);
 		}while(confirma!=0);
 	}else{
-		printf("No se encontro el socio\n");
+		printf("No se encontro el socio.\n");
 	}
 	destroyObj(soc);	
 	
@@ -294,7 +330,7 @@ void listarSocios(char filtro[])
 	soc = Socio_new();
 	 int size = soc->findAll(soc,&list,filtro);
 	do{
-		printf("Como desea ordenarlos? Ascendente presione 1 y descendente precione 2\n");
+		printf("Como desea ordenarlos? Ascendente presione 1 y descendente precione 2.\n");
 	    scanf("%d",&aux);
 		printf("[ Listado de socios ]\n");
 	   
@@ -317,13 +353,13 @@ void listarSocios(char filtro[])
 	    		break;
 	    	default:
 	    		system("cls");
-	    		printf("Ingrese un valor valido\n");
+	    		printf("Ingrese un valor valido.\n");
 		}
 	}
 	while(aux!=2 && aux !=1);
 	
 	//ARCHIVO
-	printf("Desea crear un archivo de salida? Ingrese 0 para no, o cualquier otro valor para si\n");
+	printf("Desea crear un archivo de salida? Ingrese 0 para no, o cualquier otro valor para si.\n");
 	scanf("%d", &confirma);
 	if(confirma)
 	{                       

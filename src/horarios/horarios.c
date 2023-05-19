@@ -136,26 +136,26 @@ void ingresarHorario(){
     int dia,codAct, codLug;  
 	char horaDesde[6],horaHasta[6]; //
 
-    printf("Ingrese el codigo del lugar\n");
+    printf("Ingrese el codigo del lugar.\n");
     //fgets(lugar,90,stdin);
     //horario->setCodLugar(horario,codLug);
     scanf("%d",&codLug);
     horario->setCodLugar(horario,codLug);
     
-	printf("Ingrese el dia\n");
+	printf("Ingrese el dia.\n");
     scanf("%d",&dia);
     horario->setDia(horario,dia);
 
-    printf("Ingrese el codigo de la actividad\n");
+    printf("Ingrese el codigo de la actividad.\n");
     scanf("%d",&codAct);
     horario->setCodAct(horario,codAct);
 
-    printf("Ingrese el horario de comienzo\n");
+    printf("Ingrese el horario de comienzo.\n");
     fflush(stdin);
     fgets(horaDesde,6,stdin);
     horario->setHoraDesde(horario,horaDesde);
 
-    printf("Ingrese el horario de finalizacion\n");
+    printf("Ingrese el horario de finalizacion.\n");
     fflush(stdin);
     fgets(horaHasta,6,stdin);
     horario->setHoraHasta(horario,horaHasta);

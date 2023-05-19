@@ -90,22 +90,29 @@ void ingresarActividad(){
     obj_Actividad *act;
     act = Actividad_new();
     
-    printf("ingrese el tipo de la actividad\n");
+    printf("ingrese el tipo de la actividad.\n");
     scanf("%d",&tipoActividad);
     act->setCodTipoAct(act,tipoActividad);   
     
-    printf("ingrese el legajo del profe que va a dar la actividad\n");
+    printf("ingrese el legajo del profe que va a dar la actividad.\n");
     scanf("%d",&legajo);
+    obj_Profesor *prof = Profesor_new();
+		if (prof->findbykey(prof, legajo) == NOT_FOUND) {
+			printf("El legajo del profesor no existe.\n");
+			destroyObj(prof);
+			return;
+		}
+	destroyObj(prof);
     act->setLegajoProfe(act,legajo);      
     
-    printf("ingrese la fecha de inicio\n");
+    printf("ingrese la fecha de inicio.\n");
     fflush(stdin);
     fgets(fechaInicio,12,stdin);
     act->setFechaDesde(act,fechaInicio);
     act->setFechaFin(act,"NULL");
     if(!act->saveObj(act))
     {
-              printf("Ocurrio un error al agregar actividad:\n%s\n",getLastError());
+        printf("Ocurrio un error al agregar actividad:\n%s\n",getLastError());
     }
     destroyObj(act);
 }
@@ -120,7 +127,7 @@ void actualizarActividad()
     int fechaInicioInt, fechaFinInt;
     char fechaInicio[12], fechaFin[12];
     
-    printf("[ Actualizar actividad ]\nIngrese el codigo de la actividad a modificar\n");
+    printf("[ Actualizar actividad ]\nIngrese el codigo de la actividad a modificar.\n");
     scanf("%d", &codigo);
     
     if (act->findbykey(act, codigo) != NOT_FOUND) {
@@ -132,33 +139,44 @@ void actualizarActividad()
             
             switch (i) {
                 case 1:
-                    printf("Ingrese el nuevo codigo del tipo de actividad\n");
+                    printf("Ingrese el nuevo codigo del tipo de actividad.\n");
                     scanf("%d", &codActividad);
                     act->setCodTipoAct(act, codActividad);
                     
                     if (!act->saveObj(act)) {
-                        printf("Ocurrio un error al actualizar el codigo del tipo de actividad\n%s\n", getLastError());
+                        printf("Ocurrio un error al actualizar el codigo del tipo de actividad.\n%s\n", getLastError());
                     } else {
-                        printf("Se actualizo el codigo del tipo de actividad\n");
+                        printf("Se actualizo el codigo del tipo de actividad.\n");
                     }
                     
                     break;
                     
                 case 2:
-                    printf("Ingrese el nuevo legajo del profesor\n");
-                    scanf("%d", &legajo);
-                    act->setLegajoProfe(act, legajo);
-                    
-                    if (!act->saveObj(act)) {
-                        printf("Ocurrio un error al actualizar el nuevo legajo del profesor:\n%s\n", getLastError());
-                    } else {
-                        printf("Se actualizo el legajo del profesor\n");
-                    }
+                    printf("Ingrese el nuevo legajo del profesor:\n");
+				    scanf("%d", &legajo);
+				
+				    // Verificar la existencia del legajo del profesor
+				    obj_Profesor *prof = Profesor_new();
+				    if (prof->findbykey(prof, legajo) == NOT_FOUND) {
+				        printf("El legajo del profesor no existe.\n");
+				        destroyObj(prof);
+				        break;
+				    }
+				    destroyObj(prof);
+				
+				    act->setLegajoProfe(act, legajo);
+				
+				    if (!act->saveObj(act)) {
+				        printf("Ocurrio un error al actualizar el nuevo legajo del profesor:\n%s\n", getLastError());
+				    } else {
+				        printf("Se actualizo el legajo del profesor.\n");
+				    }
+
                     
                     break;
                     
                 case 3:
-                    printf("Ingrese la nueva fecha de inicio (formato AAAA-MM-DD)\n");
+                    printf("Ingrese la nueva fecha de inicio (formato AAAA-MM-DD).\n");
                     scanf("%s", fechaInicio);
 
                     fechaInicioInt = atoi(fechaInicio);
@@ -167,7 +185,7 @@ void actualizarActividad()
                         fechaFinInt = atoi(fechaFin);
                         
                         if (fechaInicioInt > fechaFinInt) {
-                            printf("La fecha de inicio no puede ser mayor a la fecha de fin\n");
+                            printf("La fecha de inicio no puede ser mayor a la fecha de fin.\n");
                             break;
                         }
                     }
@@ -175,15 +193,15 @@ void actualizarActividad()
                     act->setFechaDesde(act, fechaInicio);
                     
                     if (!act->saveObj(act)) {
-                        printf("Ocurrio un error al actualizar la fecha de inicio\n%s\n", getLastError());
+                        printf("Ocurrio un error al actualizar la fecha de inicio.\n%s\n", getLastError());
                     } else {
-                        printf("Se actualizo la fecha de inicio\n");
+                        printf("Se actualizo la fecha de inicio.\n");
                     }
                     
                     break;
                     
                 case 4:
-                    printf("Ingrese la nueva fecha de fin (formato AAAA-MM-DD)\n");
+                    printf("Ingrese la nueva fecha de fin (formato AAAA-MM-DD).\n");
                     scanf("%s", fechaFin);
                     fechaFinInt = atoi(fechaFin);
                     if (strcmp(act->getFechaDesde(act), "") != 0) {
@@ -191,32 +209,32 @@ void actualizarActividad()
                         fechaInicioInt = atoi(fechaInicio);
                         
                         if (fechaFinInt < fechaInicioInt) {
-                            printf("La fecha de fin no puede ser menor a la fecha de inicio\n");
+                            printf("La fecha de fin no puede ser menor a la fecha de inicio.\n");
                             break;
                         }
                     }
                     act->setFechaFin(act, fechaFin);
                     if (!act->saveObj(act)) {
-                        printf("Ocurrio un error al actualizar la fecha de fin\n%s\n", getLastError());
+                        printf("Ocurrio un error al actualizar la fecha de fin.\n%s\n", getLastError());
                     } else {
-                        printf("Se actualizo la fecha de fin\n");
+                        printf("Se actualizo la fecha de fin.\n");
                     }
                     
                     break;
                     
                 default:
-                    printf("Ingrese un valor valido\n");
+                    printf("Ingrese un valor valido.\n");
                     break;
             }
             
-            printf("Desea seguir ingresando?\n- Presione cualquier tecla para si, 0 para no\n");
+            printf("Desea seguir ingresando?\n- Presione cualquier numero para si, 0 para no.\n");
             scanf("%d", &confirma);
             
         } while (confirma != 0);
         
     } else {
         system("cls");
-        printf("No se encontró la actividad\n");
+        printf("No se encontro la actividad.\n");
     }
     
     destroyObj(act);

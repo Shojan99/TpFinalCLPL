@@ -45,13 +45,17 @@ void ingresarLocalidad() //consultar el static void!!!
 	int codigopostal;
     char nombre[60];
     
-    printf("Ingrese el codigo postal de la localidad\n");
+    printf("Ingrese el codigo postal de la localidad.\n");
     scanf("%d",&codigopostal);
     loc->setId(loc, codigopostal);
     
-    printf("Ingrese el nombre de la localidad\n");
+    printf("Ingrese el nombre de la localidad.\n");
     fflush(stdin);
     fgets(nombre, 60, stdin);
+    	if(nombre[0]=='\n'){
+			printf("No se ingreso un nombre.\n");
+			return;
+			}
     loc->setNombre(loc,nombre);
 
     if(!loc->saveObj(loc))
@@ -110,7 +114,7 @@ void actualizarLocalidad(){
     loc = Localidad_new();
     int cod,i,confirma;
     char nombre[60]; 
-	printf("[ Actualizar localidad ]\n Ingrese el codigo postal de la localidad a modificar\n");
+	printf("[ Actualizar localidad ]\n Ingrese el codigo postal de la localidad a modificar.\n");
 	scanf("%d",&cod);
 	
 	if(loc->findbykey(loc, cod) != NOT_FOUND){ 
@@ -122,9 +126,8 @@ void actualizarLocalidad(){
 		switch(i){
 			case 1:
 	
-				printf("Ingrese el nuevo codigo postal\n");
+				printf("Ingrese el nuevo codigo postal.\n");
 				scanf("%d",&cod);
-			
 			
 				if(loc->findbykey(loc,cod) != NOT_FOUND)
   				{
@@ -137,32 +140,37 @@ void actualizarLocalidad(){
 				  		{
 				  			printf("Ocurrio un error al actualizar el codigo postal:\n%s\n",getLastError());
 				  		}
-				  	printf("Se actualizo el codigo postal\n");
+				  	printf("Se actualizo el codigo postal.\n");
 				}
 			  	break;
 				  	
 			case 2:
 				
-				printf("Ingrese el nuevo nombre\n");
+				printf("Ingrese el nuevo nombre.\n");
 				fflush(stdin);
 				fgets(nombre,60,stdin);
+				if(nombre[0]=='\n'){
+					printf("No se ingreso un nombre.\n");
+					break;
+				}
+				
 				loc->setNombre(loc,nombre);
 				if(!loc->saveObj(loc))
 			  		{
 			  			printf("Ocurrio un error al actualizar el nombre:\n%s\n",getLastError());
 			  		}
-			  	printf("Se actualizo el nombre\n");
+			  	printf("Se actualizo el nombre.\n");
 			  	break;	
 			default:
-				printf("ingrese un valor valido\n");
+				printf("ingrese un valor valido.\n");
 				break;
 		}
-		printf("Desea seguir ingresando?\n - Presione cualquier tecla para si y 0 para no\n");
+		printf("Desea seguir ingresando?\n - Presione cualquier tecla para si y 0 para no.\n");
 		scanf("%d",&confirma);
 		}while(confirma!=0);
 	}else{
 		system("cls");
-		printf("No se encontro la localidad\n");
+		printf("No se encontro la localidad.\n");
 	}
 	destroyObj(loc);
 }

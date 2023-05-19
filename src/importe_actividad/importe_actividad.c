@@ -75,19 +75,19 @@ void ingresarImporteActividad(){
     obj_ImporteActividad *impAct;
     impAct = ImporteActividad_new();
     
-    printf("ingrese el tipo de actividad del importe\n");
+    printf("ingrese el tipo de actividad del importe.\n");
     scanf("%d",&codTipoAct);
     impAct->setCodTipoAct(impAct,codTipoAct);   
     
-    printf("ingrese el año del importe de la actividad\n");
+    printf("ingrese el año del importe de la actividad.\n");
     scanf("%d",&anio);
     impAct->setAnio(impAct,anio);  
 	
-	printf("ingrese el mes del importe de la actividad\n");
+	printf("ingrese el mes del importe de la actividad.\n");
     scanf("%d",&mes);
     impAct->setMes(impAct,mes);   
     
-    printf("ingrese el importe la actividad\n");
+    printf("ingrese el importe la actividad.\n");
     scanf("%lf",&importe);
     impAct->setImporte(impAct,importe);    
     if(!impAct->saveObj(impAct))
@@ -108,73 +108,73 @@ void actualizarImporteActividad(){
 	int codigo,codTipoAct,anio,mes,i,confirma;
 	double importe;
 	
-	printf("[ Actualizar Importe de Actividad ]\n Ingrese el codigo del importe de la actividad a modificar\n");
+	printf("[ Actualizar Importe de Actividad ]\n Ingrese el codigo del importe de la actividad a modificar.\n");
 	scanf("%d",&codigo);
 	
 	if(impAct->findbykey(impAct, codigo) != NOT_FOUND){ 
 		
 		do{
 		system("cls");	
-		printf("Ingrese lo que desea modificar\n1 - codigo del tipo de actividad\n2 - año\n3 - mes\n4 - importe\n");
+		printf("Ingrese lo que desea modificar.\n1 - codigo del tipo de actividad\n2 - año\n3 - mes\n4 - importe\n");
 		scanf("%d",&i);
 		switch(i){
 			case 1:
 	
-				printf("Ingrese el nuevo codigo del tipo de actividad\n");
+				printf("Ingrese el nuevo codigo del tipo de actividad.\n");
 				scanf("%d",&codTipoAct);
 				impAct->setCodTipoAct(impAct,codTipoAct);
 				if(!impAct->saveObj(impAct))
 			  	{
 			  		printf("Ocurrio un error al actualizar el codigo del tipo de actividad:\n%s\n",getLastError());
 			  	}
-			  	printf("Se actualizo el codigo del tipo de actividad\n");
+			  	printf("Se actualizo el codigo del tipo de actividad.\n");
 			  	break;
 				  	
 			case 2:
 				
-				printf("Ingrese el nuevo anio del importe de actividad\n");
+				printf("Ingrese el nuevo anio del importe de actividad.\n");
 				scanf("%d",&anio);
 				impAct->setAnio(impAct,anio);
 				if(!impAct->saveObj(impAct))
 			  		{
 			  			printf("Ocurrio un error al actualizar el nuevo anio del importe de actividad:\n%s\n",getLastError());
 			  		}
-			  	printf("Se actualizo el anio del importe de actividad\n");
+			  	printf("Se actualizo el anio del importe de actividad.\n");
 			  	break;	
 			  		
 			case 3:
 			 
-				printf("Ingrese el nuevo mes del tipo de actividad\n");
+				printf("Ingrese el nuevo mes del tipo de actividad.\n");
 				scanf("%d",&mes);
 				impAct->setMes(impAct,mes);
 				if(!impAct->saveObj(impAct))
 			  	{
 			  		printf("Ocurrio un error al actualizar el nuevo mes del importe de actividad:\n%s\n",getLastError());
 			  	}
-			  	printf("Se actualizo el mes del importe de actividad\n");
+			  	printf("Se actualizo el mes del importe de actividad.\n");
 			  	break;
 				
 			case 4:
 				
-				printf("Ingrese el nuevo importe\n");
+				printf("Ingrese el nuevo importe.\n");
 				scanf("%lf",&importe);
 				impAct->setImporte(impAct, importe);
 				if(!impAct->saveObj(impAct))
 			  	{
 			  		printf("Ocurrio un error al actualizar el importe:\n%s\n",getLastError());
 			  	}
-			  	printf("Se actualizo el importe\n");
+			  	printf("Se actualizo el importe.\n");
 			  	break;
 			default:
-				printf("ingrese un valor valido\n");
+				printf("ingrese un valor valido.\n");
 				break;
 		}
-		printf("Desea seguir ingresando?\n - Presione cualquier tecla para si y 0 para no\n");
+		printf("Desea seguir ingresando?\n - Presione cualquier tecla para si y 0 para no.\n");
 		scanf("%d",&confirma);
 		}while(confirma!=0);
 	}else{
 		system("cls");
-		printf("No se encontro el importe de actividad\n");
+		printf("No se encontro el importe de actividad.\n");
 	}
 	destroyObj(impAct);
 }

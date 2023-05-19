@@ -70,29 +70,45 @@ void ingresarProfesor() //consultar el static void!!!
 
     //prof->setActivo(soc,true);
     
-    printf("Ingrese el apellido\n");
+    printf("Ingrese el apellido.\n");
     fflush(stdin);
     fgets(apellido, 90, stdin);
+    	if(apellido[0]=='\n'){
+			printf("No se ingreso un apellido.\n");
+		return;
+				}
     prof->setApellido(prof,apellido);
     
-    printf("Ingrese el nombre\n");
+    printf("Ingrese el nombre.\n");
     fflush(stdin);
     fgets(nombre, 90, stdin);
+    	if(nombre[0]=='\n'){
+			printf("No se ingreso un nombre.\n");
+		return;
+				}
     prof->setNombres(prof,nombre);
     
-    printf("ingrese el domicilio\n");
+    printf("ingrese el domicilio.\n");
     fflush(stdin);
     fgets(domicilio, 120, stdin);
+    	if(domicilio[0]=='\n'){
+			printf("No se ingreso un domicilio.\n");
+			return;
+		}
     prof->setDomicilio(prof,domicilio);
     
-     printf("ingrese el dni\n");
+    printf("ingrese el dni.\n");
     scanf("%d",&dni);
     prof->setDni(prof,dni);
 
     //fflush(stdin);
-    printf("ingrese un telefono\n");
+    printf("ingrese un telefono.\n");
     fflush(stdin);
     fgets(telefono,20,stdin);
+    	if(telefono[0]=='\n'){
+			printf("No se ingreso un telefono.\n");
+			return;
+		}
     prof->setTelefono(prof,telefono);
     
     //soc->setMoroso(soc,false);
@@ -164,88 +180,104 @@ void actualizarProfesor(){
     prof = Profesor_new();
     int dni,i,confirma,legajo;
     char nombre[80], apellido[90], domicilio[120], telefono[20]; 
-	printf("[ Actualizar profesor ]\n Ingrese el legajo del profesor a modificar\n");
+	printf("[ Actualizar profesor ]\n Ingrese el legajo del profesor a modificar.\n");
 	scanf("%d",&legajo);
 	
 	if(prof->findbykey(prof, legajo) != NOT_FOUND){ 
 		
 		do{
 		system("cls");	
-		printf("Ingrese lo que desea modificar\n1 - dni\n2 - nombre\n3 - apellido\n4 - domicilio\n5 - telefono\n");
+		printf("Ingrese lo que desea modificar.\n1 - dni\n2 - nombre\n3 - apellido\n4 - domicilio\n5 - telefono\n");
 		scanf("%d",&i);
 		switch(i){
 			case 1:
 	
-				printf("Ingrese el nuevo dni\n");
+				printf("Ingrese el nuevo dni.\n");
 				scanf("%d",&dni);
 				prof->setDni(prof,dni);
 				if(!prof->saveObj(prof))
 			  		{
 			  			printf("Ocurrio un error al actualizar el dni:\n%s\n",getLastError());
 			  		}
-			  	printf("Se actualizo el dni\n");
+			  	printf("Se actualizo el dni.\n");
 			  	break;
 				  	
 			case 2:
 				
-				printf("Ingrese el nuevo nombre\n");
+				printf("Ingrese el nuevo nombre.\n");
 				fflush(stdin);
 				fgets(nombre,80,stdin);
+					if(nombre[0]=='\n'){
+						printf("No se ingreso un nombre.\n");
+					break;
+				}
 				prof->setNombres(prof,nombre);
 				if(!prof->saveObj(prof))
 			  		{
 			  			printf("Ocurrio un error al actualizar el nombre:\n%s\n",getLastError());
 			  		}
-			  	printf("Se actualizo el nombre\n");
+			  	printf("Se actualizo el nombre.\n");
 			  	break;	
 			  		
 			case 3:
 			 
-				printf("Ingrese el nuevo apellido\n");
+				printf("Ingrese el nuevo apellido.\n");
 				fflush(stdin);
 				fgets(apellido,90,stdin);
+					if(apellido[0]=='\n'){
+						printf("No se ingreso un apellido.\n");
+					break;
+				}
 				prof->setApellido(prof,apellido);
 				if(!prof->saveObj(prof))
 				  	{
 				  	printf("Ocurrio un error al actualizar el apellido:\n%s\n",getLastError());
 				  	}
-				printf("Se actualizo el apellido\n");
+				printf("Se actualizo el apellido.\n");
 				break;
 				
 			case 4:
 				
-				printf("Ingrese el nuevo domicilio\n");
+				printf("Ingrese el nuevo domicilio.\n");
 				fflush(stdin);
 				fgets(domicilio,120,stdin);
+					if(domicilio[0]=='\n'){
+						printf("No se ingreso un domicilio.\n");
+					break;
+				}
 				prof->setDomicilio(prof,domicilio);
 				if(!prof->saveObj(prof))
 				  	{
 				  	printf("Ocurrio un error al actualizar el domicilio:\n%s\n",getLastError());
 				  	}
-				printf("Se actualizo el domicilio\n");
+				printf("Se actualizo el domicilio.\n");
 				break;
 			
 			case 5:
 				
-				printf("Ingrese el nuevo telefono\n");
+				printf("Ingrese el nuevo telefono.\n");
 				fflush(stdin);
 				fgets(telefono,20,stdin);
+					if(telefono[0]=='\n'){
+						printf("No se ingreso un telefono.\n");
+					break;
+				}
 				prof->setTelefono(prof,telefono);
 				if(!prof->saveObj(prof))
 				  	{
 				  	printf("Ocurrio un error al actualizar el telefono:\n%s\n",getLastError());
 				  	}
-				printf("Se actualizo el telefono\n");
+				printf("Se actualizo el telefono.\n");
 			default:
-				printf("ingrese un valor valido\n");
+				printf("ingrese un valor valido.\n");
 				break;
 		}
-		printf("Desea seguir ingresando?\n - Presione cualquier tecla para si y 0 para no\n");
+		printf("Desea seguir ingresando?\n - Presione cualquier tecla para si y 0 para no.\n");
 		scanf("%d",&confirma);
 		}while(confirma!=0);
 	}else{
 		system("cls");
-		printf("No se encontro el profesor\n");
+		printf("No se encontro el profesor.\n");
 	}
 	destroyObj(prof);
 }
