@@ -4,14 +4,12 @@
 #include <stdlib.h>
 
 THIS(obj_Socio)// crea definicion de funcion this para este modulo. .. Macro en config.h
-//int confirmaImpresion=0;
 //----------------------------------------------------
 static void toString_SocioImpl(void *self)
 {
      obj_Socio *obj=this(self);     
      
      obj_Localidad *loc = obj->getLocalidadObj(obj);
-     // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
      printf("Nro.Socio: %d - Dni: %d - Apellido,Nombres:%s,%s - Activo:%d  - Localidad:%s\n",
 	 obj->getNroSocio(obj), 
 	 obj->getDni(obj),
@@ -19,7 +17,7 @@ static void toString_SocioImpl(void *self)
 	 obj->getNombres(obj),
 	 obj->getActivo(obj),
 	 loc->getNombre(loc)
-	 ); // 1:true(en la base) - 0:false(en la base) -- activo / moroso
+	 );
 }
 
 //----------------------------------------------------
@@ -116,7 +114,7 @@ obj_Localidad *getLocalidadSocioObj_Impl(void *self)
 //----------------------------------------------------
 //implementacion ingresos
 //----------------------------------------------------
-void ingresarSocio() //consultar el static void!!!
+void ingresarSocio()
 {
     obj_Socio *soc;
     soc = Socio_new();
@@ -156,7 +154,6 @@ void ingresarSocio() //consultar el static void!!!
     scanf("%d",&dni);
     soc->setDni(soc,dni);
     
-    //fflush(stdin);
     printf("ingrese una observacion.\n");
     fflush(stdin);
     fgets(observaciones,250,stdin);
@@ -170,18 +167,15 @@ void ingresarSocio() //consultar el static void!!!
     scanf("%d",&cod_postal);
     soc->setCodPostal(soc,cod_postal);
 
-    //fflush(stdin);
     printf("ingrese un telefono.\n");
     fflush(stdin);
     fgets(telefono,20,stdin);
     	if(nombre[0]=='\n'){
 			printf("No se ingreso un telefono.\n");
 		return;
-				}
+		}
     soc->setTelefono(soc,telefono);
-    
     soc->setMoroso(soc,false);
-
     if(!soc->saveObj(soc))
     {
         printf("Ocurrio un error al agregar Socio:\n%s\n",getLastError());
@@ -199,8 +193,7 @@ void actualizarSocio(){
 	
 	if(soc->findbykey(soc, nro_socio) != NOT_FOUND){ 
 		
-		do{
-		//system("cls");	
+		do{	
 		printf("Ingrese lo que desea modificar.\n1 - dni\n2 - nombre\n3 - apellido\n4 - domicilio\n5 - telefono\n6 - dar de baja\n");
 		scanf("%d",&i);
 		switch(i){
@@ -347,7 +340,6 @@ void listarSocios(char filtro[]) {
         }
     } while (aux != 2 && aux != 1);
 
-    // ARCHIVO
     printf("Desea crear un archivo de salida? Ingrese 0 para no, o cualquier otro valor para si\n");
     scanf("%d", &confirma);
     if (confirma) {
@@ -355,7 +347,7 @@ void listarSocios(char filtro[]) {
         archivo = fopen("salida.txt", "w");
         if (archivo == NULL) {
             printf("No se pudo abrir el archivo.\n");
-            destroyObjList(list, size); // Liberar la memoria antes de salir
+            destroyObjList(list, size);
             destroyObj(soc);
             return;
         }

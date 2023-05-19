@@ -9,8 +9,7 @@ THIS(obj_ImporteActividad)// crea definicion de funcion this para este modulo. .
 static void toString_ImporteActividadImpl(void *self)
 {
      obj_ImporteActividad *obj=this(self);     
-     
-     // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
+
      printf("\n"); 
 }
 //----------------------------------------------------

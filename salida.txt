@@ -1,1 +1,0 @@
-Nro.Socio: 2 - Dni: 41555555 - Apellido,Nombres:Smith,Saul - Activo:1

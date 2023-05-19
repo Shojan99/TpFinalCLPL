@@ -20,7 +20,7 @@ int menu(char *msg, int tope){
         printf("%s", msg);
         leidos = scanf("%d", &opcion);
 
-        while (getchar() != '\n'); // Limpiar el búfer de entrada
+        while (getchar() != '\n');
 
         if (leidos != 1 || opcion < 0 || opcion > tope) {
         	system("cls");
@@ -77,11 +77,9 @@ int menuIngreso()
     return 1;
 }
 
-// Resto del código omitido por brevedad
-
 int menuActualizar() 
 {
-    switch(menu("Menu de actualizacion de informacion.\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Horarios\n6 - Lugares\n7 - Tipo de Actividades\n8 - actividad de socio\n9 - Actualizar el importe de una actividad\n10 - Pagar Cuota\n11 - Anular Cuota\n0 - Salir\n", 11))
+    switch(menu("Menu de actualizacion de informacion.\n1 - Socios\n2 - Profesores\n3 - Actividades\n4 - Localidades\n5 - Lugares\n6 - Tipo de Actividades\n7 - actividad de socio\n8 - Actualizar el importe de una actividad\n9 - Pagar Cuota\n10 - Anular Cuota\n0 - Salir\n", 10))
     {
         case 0:
             return 1;
@@ -98,33 +96,28 @@ int menuActualizar()
             actualizarLocalidad();
             break;
         case 5:
-            //actualizarHorario();
-            break;
-        case 6:
             actualizarLugar();
             break;
-        case 7:
+        case 6:
             actualizarTipoActividad();
             break;
-        case 8:
+        case 7:
             actualizarActividadSocio();
             break;
-        case 9:
+        case 8:
             actualizarImporteActividad();
             break;
-        case 10:
-            //pagarCuota();
+        case 9:
+            pagarCuota();
             break;
-        case 11:
-          //  anularCuota();
+        case 10:
+            anularCuota();
         default:
         	printf("Opcion invalida. Por favor, ingrese una opcion valida.\n");
             break;
     }
     return 1;
 }
-
-// Resto del código omitido por brevedad
 
 int menuLista()
 {
@@ -162,8 +155,6 @@ int menuLista()
     return 1;
 }
 
-// Resto del código omitido por brevedad
-
 int menuPrincipal()
 {
     int opcion = menu("Menu de opciones.\n1 - Ingresos\n2 - Actualizaciones\n3 - Listados\n0 - Salir\n", 4);
@@ -191,8 +182,7 @@ int menuPrincipal()
 int main(int argc, char *argv[])
 {
 	if(!init_config(argv[POS_CONFIG]))
-  	exit(-1);
-    // Resto del código omitido por brevedad
+  		exit(-1);
     while (menuPrincipal());
     system("PAUSE");
     return 0;

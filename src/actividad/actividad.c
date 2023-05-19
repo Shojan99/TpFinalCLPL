@@ -13,7 +13,6 @@ static void toString_ActividadImpl(void *self)
 {
      obj_Actividad *obj=this(self);     
      obj_TipoActividad *t_act = obj->getTipoActividadObj(obj);
-     // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
      printf("Codigo Actividad: %d - Codigo Tipo Actividad:%d - Fecha inicio: %s - Fecha fin: %s - Numero legajo profesor: %d \n",
 	 obj->getCodigo(obj), 
 	 obj->getCodTipoAct(obj),
@@ -155,7 +154,6 @@ void actualizarActividad()
                     printf("Ingrese el nuevo legajo del profesor:\n");
 				    scanf("%d", &legajo);
 				
-				    // Verificar la existencia del legajo del profesor
 				    obj_Profesor *prof = Profesor_new();
 				    if (prof->findbykey(prof, legajo) == NOT_FOUND) {
 				        printf("El legajo del profesor no existe.\n");
@@ -239,27 +237,6 @@ void actualizarActividad()
     
     destroyObj(act);
 }
-
-
-/*
-void listarActividades(){
-    printf("[ Listado de Actividades ]\n");
-    int i;
-    void *list;
-    obj_Actividad *loc;    
-    obj_Actividad *itm;
-    loc = Actividad_new();
-    int size = loc->findAll(loc,&list,NULL);
-    for(i=0;i<size;++i)
-    {
-    	itm = ((Object **)list)[i];
-    	((Object *)itm)->toString(itm);
-    }
-    destroyObjList(list,size);
-    destroyObj(loc);
-    
-}
-*/
 //----------------------------------------------------
 //implementacion constructor
 //----------------------------------------------------

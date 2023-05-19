@@ -38,7 +38,7 @@ static void setNombreLocalidad_Impl(void *self,char *descripcion_Localidad)
 //----------------------------------------------------
 //implementacion de relaciones
 //----------------------------------------------------
-void ingresarLocalidad() //consultar el static void!!!
+void ingresarLocalidad()
 {
     obj_Localidad *loc;
     loc = Localidad_new();

@@ -138,8 +138,6 @@ obj_Cuotas *Cuotas_new()
   return (obj_Cuotas *)init_obj(sizeof(obj_Cuotas), init_Cuotas);
 }
 //----------------------------------------------------
-
-// Función de comparación para ordenar importes de actividad de mayor a menor
 int compararImportes(const void *a, const void *b) {
     obj_ImporteActividad *impA = *(obj_ImporteActividad **)a;
     obj_ImporteActividad *impB = *(obj_ImporteActividad **)b;
@@ -162,7 +160,6 @@ void anularCuota() {
     printf("Ingrese el codigo de socio: ");
     scanf("%d", &codigoSocio);
     
-    // Buscar en la tabla ActividadSocio los códigos de actividad asociados al socio
     obj_ActividadSocio *actSoc;
     actSoc = ActividadSocio_new();
     
@@ -490,7 +487,7 @@ void ingresarCuota() {
     cuota->setCodActSocio(cuota, codigoAct);
     cuota->setImporte(cuota, importe);
     cuota->setEstado(cuota, "I");
-    cuota->setFechaPago(cuota, "NULL"); // Sin fecha de pago
+    cuota->setFechaPago(cuota, "NULL");
     
     if (!cuota->saveObj(cuota)) {
         printf("Ocurrio un error al agregar la cuota:\n%s\n", getLastError());

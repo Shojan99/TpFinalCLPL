@@ -61,14 +61,12 @@ static void destroyInternalCli_Impl(void *self)
 //----------------------------------------------------
 //implementacion de relaciones
 //----------------------------------------------------
-void ingresarProfesor() //consultar el static void!!!
+void ingresarProfesor()
 {
     obj_Profesor *prof;
     prof = Profesor_new();
     int dni;
     char nombre[80], apellido[90], domicilio[120], telefono[20];
-
-    //prof->setActivo(soc,true);
     
     printf("Ingrese el apellido.\n");
     fflush(stdin);
@@ -101,7 +99,6 @@ void ingresarProfesor() //consultar el static void!!!
     scanf("%d",&dni);
     prof->setDni(prof,dni);
 
-    //fflush(stdin);
     printf("ingrese un telefono.\n");
     fflush(stdin);
     fgets(telefono,20,stdin);
@@ -110,8 +107,6 @@ void ingresarProfesor() //consultar el static void!!!
 			return;
 		}
     prof->setTelefono(prof,telefono);
-    
-    //soc->setMoroso(soc,false);
 
     if(!prof->saveObj(prof))
     {

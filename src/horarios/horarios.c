@@ -102,18 +102,6 @@ obj_Actividad *getActividad_HorarioObj_Impl(void *self)
 }
 
 //----------------------------------------------------
-/*obj_Lugar *getLugar_HorarioObj_Impl(void *self)  
-{
-	obj_Horario *obj = this(self);	
-	//acceso a la informacion relacionada
-	if(obj->lugar == NULL)
-	{
-		obj->lugar = Lugar_new();
-		obj->lugar->findbykey(obj->lugar,obj->getCodLugar(obj));  //no se puede hacer findkey porque lugar es una cadrena (asi esta definido en la base)
-		return obj->lugar;
-	}
-	return NULL;
-}*/
 
 obj_Lugar *getLugar_HorarioObj_Impl(void *self)
 {
@@ -137,8 +125,6 @@ void ingresarHorario(){
 	char horaDesde[6],horaHasta[6]; //
 
     printf("Ingrese el codigo del lugar.\n");
-    //fgets(lugar,90,stdin);
-    //horario->setCodLugar(horario,codLug);
     scanf("%d",&codLug);
     horario->setCodLugar(horario,codLug);
     
@@ -212,7 +198,6 @@ void listarHorariosSemana() {
             obj_Horario *itm = ((obj_Horario **)list)[i];
             char horaAcotada[MAXIMA_LONGITUD_CADENA] = "";
      		char horaAcotada2[MAXIMA_LONGITUD_CADENA] = "";
-   			 // Extraer
     		strncpy(horaAcotada, itm->getHoraDesde(itm), CANTIDADCARACTERES);
     		strncpy(horaAcotada2, itm->getHoraHasta(itm), CANTIDADCARACTERES);
             fprintf(archivo, "ID de la Clase: %d\n", itm->getCodigo(itm));

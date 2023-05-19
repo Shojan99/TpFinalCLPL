@@ -253,7 +253,7 @@ void actualizarActividadSocio()
                     break;
                     
                 case 3:
-                    printf("Ingrese la nueva fecha de inicio (formato AAAA/MM/DD).\n");
+                    printf("Ingrese la nueva fecha de inicio (formato AAAA-MM-DD).\n");
                     scanf("%11s", fechaInicio);
                     actS->setFechaInicio(actS, fechaInicio);
                     if (!actS->saveObj(actS)) {
@@ -264,7 +264,7 @@ void actualizarActividadSocio()
                     break;
                     
                 case 4:
-                    printf("Ingrese la fecha de fin (formato AAAA/MM/DD).\n");
+                    printf("Ingrese la fecha de fin (formato AAAA-MM-DD).\n");
                     scanf("%11s", fechaFin);
                     char *fechaInicioActual = actS->getFechaInicio(actS);
                     if (strcmp(fechaFin, "") != 0 && strcmp(fechaInicioActual, "") != 0) {
