@@ -192,9 +192,12 @@ int menuPrincipal()
 
 int main(int argc, char *argv[])
 {
-    // Resto del código omitido por brevedad
-    while (menuPrincipal());
-    system("PAUSE");
-    return 0;
+	if(!init_config(argv[POS_CONFIG]))
+  		exit(-1);
+  
+	setDebug(true);
+	while(menuPrincipal());		
+	system("PAUSE");
+  	return 0;
 }
 
