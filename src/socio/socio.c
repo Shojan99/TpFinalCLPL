@@ -22,22 +22,6 @@ static void toString_SocioImpl(void *self)
 	 ); // 1:true(en la base) - 0:false(en la base) -- activo / moroso
 }
 
-static void toFile_SocioImpl(void *self, FILE *fd)
-{
-     obj_Socio *obj=this(self);     
-     
-     obj_Localidad *loc = obj->getLocalidadObj(obj);
-     // version con algunos datos, ver como gestionar la posibilidad de listar mas informacion.
-     fprintf(fd,"Nro.Socio: %d - Dni: %d - Apellido,Nombres:%s,%s - Activo:%d  - Localidad:%s\n",
-	 obj->getNroSocio(obj), 
-	 obj->getDni(obj),
-	 obj->getApellido(obj), 
-	 obj->getNombres(obj),
-	 obj->getActivo(obj),
-	 loc->getNombre(loc)
-	 ); // 1:true(en la base) - 0:false(en la base) -- activo / moroso
-}
-
 //----------------------------------------------------
 //implementacion de getters
 //----------------------------------------------------
