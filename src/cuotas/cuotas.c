@@ -157,6 +157,217 @@ int compararImportes(const void *a, const void *b) {
     return mesB - mesA;
 }
 
+void anularCuota() {
+    int codigoSocio, i;
+    printf("Ingrese el codigo de socio: ");
+    scanf("%d", &codigoSocio);
+    
+    // Buscar en la tabla ActividadSocio los códigos de actividad asociados al socio
+    obj_ActividadSocio *actSoc;
+    actSoc = ActividadSocio_new();
+    
+    char filtro[100];
+    sprintf(filtro, "nro_socio=%d", codigoSocio);
+    
+    void *list;
+    int size = actSoc->findAll(actSoc, &list, filtro);
+    
+    if (size == 0) {
+        printf("El socio no tiene actividades asociadas.\n");
+        destroyObj(actSoc);
+        return;
+    }
+    
+    printf("Codigos de actividad asociados al socio:\n");
+    for (i = 0; i < size; i++) {
+        obj_ActividadSocio *itmActSoc = ((obj_ActividadSocio **)list)[i];
+        int codigoAct = itmActSoc->getCodAct(itmActSoc);
+        printf("%d. Codigo de actividad: %d\n", i+1, codigoAct);
+    }
+    
+    int opcionAct;
+    printf("Seleccione una actividad (ingrese el número): ");
+    scanf("%d", &opcionAct);
+    
+    if (opcionAct < 1 || opcionAct > size) {
+        printf("Opcion de actividad invalida.\n");
+        destroyObj(actSoc);
+        return;
+    }
+    
+    obj_ActividadSocio *itmActSoc = ((obj_ActividadSocio **)list)[opcionAct - 1];
+    int codigoAct = itmActSoc->getCodAct(itmActSoc);
+    destroyObj(actSoc);
+    
+    obj_Cuotas *cuota;
+    cuota = Cuotas_new();
+    
+    sprintf(filtro, "estado='P' AND cod_act_socio=%d", codigoSocio, codigoAct);
+    
+    size = cuota->findAll(cuota, &list, filtro);
+    
+    if (size == 0) {
+        printf("No hay cuotas pagadas para la actividad seleccionada.\n");
+        destroyObj(cuota);
+        return;
+    }
+    
+    printf("Cuotas pagadas asociadas a la actividad:\n");
+    for (i = 0; i < size; i++) {
+        obj_Cuotas *itmCuota = ((obj_Cuotas **)list)[i];
+        int codigoCuota = itmCuota->getCodigo(itmCuota);
+        float importe = itmCuota->getImporte(itmCuota);
+        char *fechaVencimiento = itmCuota->getFechaVenc(itmCuota);
+        
+        printf("%d. Codigo de cuota: %d\n", i+1, codigoCuota);
+        printf("   Importe: %.2f\n", importe);
+        printf("   Fecha de vencimiento: %s\n", fechaVencimiento);
+    }
+    
+    int opcionCuota;
+    printf("Seleccione una cuota para anular (ingrese el numero): ");
+    scanf("%d", &opcionCuota);
+    
+    if (opcionCuota < 1 || opcionCuota > size) {
+        printf("Opcion de cuota invalida.\n");
+        destroyObj(cuota);
+        return;
+    }
+    
+    obj_Cuotas *itmCuota = ((obj_Cuotas **)list)[opcionCuota - 1];
+    int codigoCuota = itmCuota->getCodigo(itmCuota);
+    destroyObj(cuota);
+
+    cuota = Cuotas_new();
+    int cuotaSize = cuota->findbykey(cuota, codigoCuota);
+    
+    if (cuotaSize == 0) {
+        printf("No se encontro la cuota correspondiente al codigo %d.\n", codigoCuota);
+        destroyObj(cuota);
+        return;
+    }
+    
+    cuota->setEstado(cuota, "A");
+    
+    if (!cuota->saveObj(cuota)) {
+        printf("Ocurrio un error al anular la cuota:\n%s\n", getLastError());
+    } else {
+        printf("Cuota anulada exitosamente.\n");
+    }
+    
+    destroyObj(cuota);
+}
+
+void pagarCuota() {
+    int codigoSocio, i;
+    printf("Ingrese el codigo de socio: ");
+    scanf("%d", &codigoSocio);
+    
+    obj_ActividadSocio *actSoc;
+    actSoc = ActividadSocio_new();
+    
+    char filtro[100];
+    sprintf(filtro, "nro_socio=%d", codigoSocio);
+    
+    void *list;
+    int size = actSoc->findAll(actSoc, &list, filtro);
+    
+    if (size == 0) {
+        printf("El socio no tiene actividades asociadas.\n");
+        destroyObj(actSoc);
+        return;
+    }
+    
+    printf("Codigos de actividad asociados al socio:\n");
+    for (i = 0; i < size; i++) {
+        obj_ActividadSocio *itmActSoc = ((obj_ActividadSocio **)list)[i];
+        int codigoAct = itmActSoc->getCodAct(itmActSoc);
+        printf("%d. Codigo de actividad: %d\n", i+1, codigoAct);
+    }
+    
+    int opcionAct;
+    printf("Seleccione una actividad (ingrese el numero): ");
+    scanf("%d", &opcionAct);
+    
+    if (opcionAct < 1 || opcionAct > size) {
+        printf("Opcion de actividad invalida.\n");
+        destroyObj(actSoc);
+        return;
+    }
+    
+    obj_ActividadSocio *itmActSoc = ((obj_ActividadSocio **)list)[opcionAct - 1];
+    int codigoAct = itmActSoc->getCodAct(itmActSoc);
+    destroyObj(actSoc);
+    
+    obj_Cuotas *cuota;
+    cuota = Cuotas_new();
+    
+    sprintf(filtro, "estado='I' AND cod_act_socio=%d", codigoSocio, codigoAct);
+    
+    size = cuota->findAll(cuota, &list, filtro);
+    
+    if (size == 0) {
+        printf("No hay cuotas impagas para la actividad seleccionada.\n");
+        destroyObj(cuota);
+        return;
+    }
+    
+    printf("Cuotas impagas asociadas a la actividad:\n");
+    for (i = 0; i < size; i++) {
+        obj_Cuotas *itmCuota = ((obj_Cuotas **)list)[i];
+        int codigoCuota = itmCuota->getCodigo(itmCuota);
+        float importe = itmCuota->getImporte(itmCuota);
+        char *fechaVencimiento = itmCuota->getFechaVenc(itmCuota);
+        
+        printf("%d. Codigo de cuota: %d\n", i+1, codigoCuota);
+        printf("   Importe: %.2f\n", importe);
+        printf("   Fecha de vencimiento: %s\n", fechaVencimiento);
+    }
+    
+    int opcionCuota;
+    printf("Seleccione una cuota para pagar (ingrese el numero): ");
+    scanf("%d", &opcionCuota);
+    
+    if (opcionCuota < 1 || opcionCuota > size) {
+        printf("Opcion de cuota invalida.\n");
+        destroyObj(cuota);
+        return;
+    }
+    
+    obj_Cuotas *itmCuota = ((obj_Cuotas **)list)[opcionCuota - 1];
+    int codigoCuota = itmCuota->getCodigo(itmCuota);
+    destroyObj(cuota);
+
+    cuota = Cuotas_new();
+    int cuotaSize = cuota->findbykey(cuota, codigoCuota);
+    
+    if (cuotaSize == 0) {
+        printf("No se encontro la cuota correspondiente al codigo %d.\n", codigoCuota);
+        destroyObj(cuota);
+        return;
+    }
+    
+    cuota->setEstado(cuota, "P");
+    
+    time_t tiempoActual;
+    struct tm *tiempoLocal;
+    char fechaPago[11];
+    
+    tiempoActual = time(NULL);
+    tiempoLocal = localtime(&tiempoActual);
+    strftime(fechaPago, sizeof(fechaPago), "%Y-%m-%d", tiempoLocal);
+    
+    cuota->setFechaPago(cuota, fechaPago);
+    
+    if (!cuota->saveObj(cuota)) {
+        printf("Ocurrio un error al pagar la cuota:\n%s\n", getLastError());
+    } else {
+        printf("Cuota pagada exitosamente.\n");
+    }
+    
+    destroyObj(cuota);
+}
+
 void ingresarCuota() {
     obj_Cuotas *cuota;
     cuota = Cuotas_new();
